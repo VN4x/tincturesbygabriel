@@ -330,6 +330,26 @@ function Landing() {
         />
         <div className="relative mx-auto grid max-w-5xl items-center gap-12 px-5 sm:px-8 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">
           <figure className="mx-auto w-full max-w-[22rem]">
+            <button
+              type="button"
+              onClick={() => setAskOpen(true)}
+              className="group mb-5 ml-auto flex items-center gap-3 text-right"
+            >
+              <span className="font-[family-name:var(--font-ui)] text-[10px] leading-relaxed tracking-[0.22em] text-muted-foreground uppercase transition-colors group-hover:text-primary">
+                {lang === "et" ? "Küsi doktorilt" : "Ask the doctor"}
+                <span className="mx-2 text-primary">—</span>
+                DM
+              </span>
+              <img
+                src={doctorAvatar}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                width={256}
+                height={256}
+                className="h-14 w-14 shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
+              />
+            </button>
             <div className="relative overflow-hidden rounded-sm border border-primary/25 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
               <img
                 src={authorPortrait}
