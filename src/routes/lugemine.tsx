@@ -40,6 +40,7 @@ function ReaderPage() {
   const [size, setSize] = useState(1);
   const [active, setActive] = useState<string>(sample.sections[0]?.id ?? "");
   const [busy, setBusy] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   const { hasBook, user } = useSession();
 
   // Entitled readers (admin, friend account, paid) get the whole book from the server.
