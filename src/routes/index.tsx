@@ -189,9 +189,9 @@ function Landing() {
                 <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl leading-snug text-foreground">
                   {c.title}
                 </h3>
-                <p className="mt-4 text-[18px] leading-relaxed text-foreground/75">{c.teaser}</p>
+                <p className="mt-4 text-[16px] leading-relaxed text-foreground/75">{c.teaser}</p>
                 {c.fade && (
-                  <p className="mt-3 locked-text text-[18px] leading-relaxed" aria-hidden="true">
+                  <p className="mt-3 locked-text text-[16px] leading-relaxed" aria-hidden="true">
                     {c.fade}
                   </p>
                 )}
