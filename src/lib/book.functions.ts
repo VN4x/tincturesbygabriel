@@ -41,7 +41,7 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
   const openIds = new Set<string>();
 
   // The introduction is always open, plus three random chapters per visit.
-  const intro = book.sections.find((s) => s.id.startsWith("sissejuhatus"));
+  const intro = readable.find((s) => s.id.startsWith("sissejuhatus"));
   if (intro) openIds.add(intro.id);
 
   const pool = [...chapters];
@@ -51,7 +51,7 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
     if (picked) openIds.add(picked.id);
   }
 
-  const sections: PublicSection[] = book.sections.map((s) => {
+  const sections: PublicSection[] = readable.map((s) => {
     const locked = !openIds.has(s.id);
     if (!locked) {
       return { ...s, locked: false, hiddenBlocks: 0 };
