@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      book_sections: {
+        Row: {
+          blocks: Json
+          created_at: string
+          id: string
+          kind: string
+          label: string
+          language: string
+          ord: number
+          page: number
+          title: string
+          words: number
+        }
+        Insert: {
+          blocks: Json
+          created_at?: string
+          id: string
+          kind: string
+          label?: string
+          language?: string
+          ord: number
+          page?: number
+          title?: string
+          words?: number
+        }
+        Update: {
+          blocks?: Json
+          created_at?: string
+          id?: string
+          kind?: string
+          label?: string
+          language?: string
+          ord?: number
+          page?: number
+          title?: string
+          words?: number
+        }
+        Relationships: []
+      }
       invites: {
         Row: {
           accepted_at: string | null
