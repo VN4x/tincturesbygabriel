@@ -442,6 +442,7 @@ function Landing() {
       </footer>
 
       {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
+      {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
 }
