@@ -145,7 +145,7 @@ function Landing() {
                 <h3 className="mt-5 font-[family-name:var(--font-display)] text-xl text-foreground">
                   {t(`premise.${n}.h`)}
                 </h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                <p className="mt-3 text-[17px] leading-relaxed text-muted-foreground">
                   {t(`premise.${n}.p`)}
                 </p>
               </div>
@@ -163,7 +163,7 @@ function Landing() {
               <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl text-foreground sm:text-5xl">
                 {t("inside.title")}
               </h2>
-              <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">{t("inside.lead")}</p>
+              <p className="mt-5 text-[17px] leading-relaxed text-muted-foreground">{t("inside.lead")}</p>
             </div>
             <dl className="grid grid-cols-3 gap-8 font-[family-name:var(--font-ui)]">
               <Stat value={String(chapters.length)} label={t("inside.chapters")} />
@@ -189,9 +189,9 @@ function Landing() {
                 <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl leading-snug text-foreground">
                   {c.title}
                 </h3>
-                <p className="mt-4 text-[14px] leading-relaxed text-foreground/75">{c.teaser}</p>
+                <p className="mt-4 text-[18px] leading-relaxed text-foreground/75">{c.teaser}</p>
                 {c.fade && (
-                  <p className="mt-3 locked-text text-[14px] leading-relaxed" aria-hidden="true">
+                  <p className="mt-3 locked-text text-[18px] leading-relaxed" aria-hidden="true">
                     {c.fade}
                   </p>
                 )}
@@ -226,7 +226,7 @@ function Landing() {
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl leading-tight text-foreground sm:text-5xl">
               {t("sample.title")}
             </h2>
-            <p className="mt-6 text-[15px] leading-relaxed text-muted-foreground">{t("sample.p")}</p>
+            <p className="mt-6 text-[17px] leading-relaxed text-muted-foreground">{t("sample.p")}</p>
             <Link
               to="/lugemine"
               className="mt-9 inline-block rounded-full bg-primary px-8 py-3.5 font-[family-name:var(--font-ui)] text-[12px] tracking-[0.18em] text-primary-foreground uppercase shadow-(--shadow-glow) transition-transform hover:-translate-y-0.5"
@@ -281,7 +281,7 @@ function Landing() {
                   <p className="mt-4 font-[family-name:var(--font-display)] text-4xl text-primary">
                     {t(`access.${tier}.price`)}
                   </p>
-                  <p className="mt-5 flex-1 text-[15px] leading-relaxed text-muted-foreground">
+                  <p className="mt-5 flex-1 text-[17px] leading-relaxed text-muted-foreground">
                     {t(`access.${tier}.p`)}
                   </p>
                   {tier === "free" ? (
@@ -332,7 +332,7 @@ function Landing() {
             {t("author.title")}
           </h2>
           <span className="mx-auto mt-8 block h-px w-28 rule-gold" />
-          <p className="mt-8 text-[16px] leading-relaxed text-muted-foreground">{t("author.p1")}</p>
+          <p className="mt-8 text-[18px] leading-relaxed text-muted-foreground">{t("author.p1")}</p>
           <p className="mt-8 font-[family-name:var(--font-display)] text-xl leading-relaxed text-foreground/85 italic">
             {t("author.p2")}
           </p>
@@ -355,7 +355,7 @@ function Landing() {
                     +
                   </span>
                 </summary>
-                <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+                <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
                   {t(`faq.${n}.a`)}
                 </p>
               </details>
@@ -380,7 +380,7 @@ function Landing() {
           <h2 className="text-glow font-[family-name:var(--font-display)] text-4xl text-foreground sm:text-6xl">
             {t("cta.title")}
           </h2>
-          <p className="mt-6 text-[16px] leading-relaxed text-muted-foreground">{t("cta.p")}</p>
+          <p className="mt-6 text-[18px] leading-relaxed text-muted-foreground">{t("cta.p")}</p>
           <Link
             to="/lugemine"
             className="mt-10 inline-block rounded-full bg-primary px-9 py-4 font-[family-name:var(--font-ui)] text-[12px] tracking-[0.2em] text-primary-foreground uppercase shadow-(--shadow-glow) transition-transform hover:-translate-y-0.5"
