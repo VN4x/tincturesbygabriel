@@ -62,7 +62,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
   const words = useMemo(() => sections.reduce((sum, s) => sum + s.words, 0), []);
   const [loginOpen, setLoginOpen] = useState(false);
