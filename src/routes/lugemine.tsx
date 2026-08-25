@@ -274,7 +274,7 @@ function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; si
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={() => setAskOpen(true)}
+                onClick={onAsk}
                 className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
               >
                 {t("reader.dm")}
@@ -362,7 +362,7 @@ function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; si
                 <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => setAskOpen(true)}
+                    onClick={onAsk}
                     className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
                   >
                     {t("reader.dm")}
