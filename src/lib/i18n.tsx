@@ -20,7 +20,11 @@ export const dict: Dict = {
   "nav.access": { et: "Ligipääs", en: "Access" },
   "nav.author": { et: "Autor", en: "Author" },
   "nav.read": { et: "VAATA SISSE", en: "Read free" },
+  "nav.fullRead": { et: "Ava raamat", en: "Open the book" },
+  "nav.signin": { et: "Sisene", en: "Sign in" },
+  "nav.signout": { et: "Logi välja", en: "Sign out" },
   "nav.login": { et: "Logi sisse", en: "Sign in" },
+  "nav.logout": { et: "Välju", en: "Sign out" },
 
   "hero.eyebrow": { et: "Gabriel Corpus · Maagia Doktor", en: "Gabriel Corpus · Doctor of Magic" },
   "hero.title": { et: "Metsa vägi ja tervis", en: "The Power of the Forest and Health" },
@@ -109,8 +113,8 @@ export const dict: Dict = {
   "author.kicker": { et: "Autor", en: "Author" },
   "author.title": { et: "Gabriel Corpus", en: "Gabriel Corpus" },
   "author.p1": {
-    et: "Maagia Doktor. Kirjutab taimedest keele ja tähenduse kaudu: etümoloogia, antiikne mõte ja rahvapärimus koos tänapäevase ekstraktsioonitehnikaga. Aeg avaldada saladuses hoitud maagiatehnikad asjade mõjude saavutamiseks",
-    en: "Doctor of Magic. Writes about plants through language and meaning: etymology, ancient thought and folk lore alongside modern extraction technique.",
+    et: "Maagia Doktor. Õppinud Indias ja Kreeka ülikoolides. Kirjutab taimedest keele ja tähenduse kaudu: etümoloogia, antiikne mõte ja rahvapärimus koos tänapäevase ekstraktsioonitehnikaga. Aeg avaldada saladuses hoitud maagiatehnikad asjade mõjude saavutamiseks",
+    en: "Doctor of Magic. Studied in India and at Greek universities. Writes about plants through language and meaning: etymology, ancient thought and folk lore alongside modern extraction technique.",
   },
   "author.p2": {
     et: "„Tervise poole püüdlemine on kaugenemine jubedatest kirgedest. See ongi tõeline vaimne praktika.“",
@@ -138,6 +142,11 @@ export const dict: Dict = {
   "faq.4.a": {
     et: "Ei. Raamat on pärimuse ja tehnika käsitlus, mitte ravijuhend. Tugevatoimeliste taimede puhul on täpsus ja mõõdukus hädavajalikud.",
     en: "No. The book is a treatment of lore and technique, not a medical guide. With potent plants, precision and moderation are essential.",
+  },
+  "faq.5.q": { et: "Kas on paberraamat?", en: "Is there a paperback?" },
+  "faq.5.a": {
+    et: "Paberraamat (Lulu / Amazon) on eraldi trükiväljaanne. Veebilugemine siin lehel on 5 € täisligipääs.",
+    en: "The paperback (Lulu / Amazon) is a separate print edition. Web reading on this site is the €5 full access.",
   },
 
   "cta.title": { et: "Astu metsa sisse", en: "Step into the forest" },
@@ -178,6 +187,32 @@ export const dict: Dict = {
     en: "The English edition is in preparation — sample passages are shown in the original language for now.",
   },
   "reader.loading": { et: "Metsa avamine…", en: "Opening the forest…" },
+  "reader.dm": { et: "Küsi doktorilt — DM", en: "Ask the doctor — DM" },
+
+  "full.toc": { et: "Sisukord", en: "Contents" },
+  "full.zoom": { et: "Kirja suurus", en: "Type size" },
+  "full.themeForest": { et: "Mets", en: "Forest" },
+  "full.themeParchment": { et: "Pärgament", en: "Parchment" },
+  "full.themeLight": { et: "Valge", en: "Light" },
+  "full.paginated": { et: "Leheküljed", en: "Paginated" },
+  "full.scrolled": { et: "Kerimine", en: "Scroll" },
+  "full.bookmark": { et: "Järjehoidja", en: "Bookmark" },
+  "full.bookmarked": { et: "Salvestatud", en: "Saved" },
+  "full.gotoBookmark": { et: "Ava järjehoidja", en: "Go to bookmark" },
+  "full.progress": { et: "Edenemine", en: "Progress" },
+  "full.unauthorized": { et: "Täisligipääs on vajalik.", en: "Full access is required." },
+  "full.unavailable": {
+    et: "Raamatufail pole sellel serveril saadaval. Ühenda EPUB (BOOK_PATH või BOOK_URL).",
+    en: "The book file is not on this server. Mount the EPUB (BOOK_PATH or BOOK_URL).",
+  },
+  "full.issue": { et: "Teata probleemist", en: "Report an issue" },
+  "full.issueP": {
+    et: "Kirjelda, mis ei töötanud. Sõnum jõuab autori halduspaneeli.",
+    en: "Describe what went wrong. The message goes to the author’s admin panel.",
+  },
+  "full.issueSent": { et: "Teade on saadetud.", en: "The report was sent." },
+  "full.issueSend": { et: "Saada", en: "Send" },
+  "full.close": { et: "Sulge", en: "Close" },
 };
 
 type Ctx = {

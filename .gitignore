@@ -30,3 +30,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Book source — never publish the EPUB or the full extract
+*.epub
+*.pdf
+*.af
+private/
+src/content/book-et.full.json
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Clean Lovable snapshot — never merge origin/main into this working tree
+/lovable/

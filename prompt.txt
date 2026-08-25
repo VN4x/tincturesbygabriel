@@ -1,0 +1,19 @@
+Build a production-ready web-based ebook reader application using React, Vite, Tailwind CSS, and `foliate-js`. 
+
+### Project Requirements:
+1. **The Paywall Gate (Stripe / Mock):**
+   - A clean landing page with the book cover, description, and an "Unlock Full Book" button.
+   - Once unlocked (stored in localStorage / Supabase session), the user gets redirected to the reader view.
+
+2. **The Reader Engine (`foliate-js`):**
+   - Implement `foliate-js` to load a 40 MB remote EPUB file securely from a storage URL. Ensure it handles the unzipping and rendering efficiently without blocking the main UI thread.
+   - Support both **paginated view** (flipping columns like a book) and smooth scrolling.
+
+3. **Reader Customization Toolbar:**
+   - **Font Size Zoom:** A slider that dynamically adjusts text sizing on the fly (crucial since it's an Affinity export).
+   - **Themes:** Light mode, Dark mode, and Sepia mode.
+   - **Table of Contents (TOC):** A slide-out drawer pulling the metadata chapters directly from the EPUB structure.
+   - **Progress & Bookmarks:** A bottom progress bar showing percentage read, and a "Save Bookmark" button that logs the exact CFI (Canonical Fragment Identifier) location to LocalStorage.
+
+4. **Security / Optimization:**
+   - Add code to handle the large file size gracefully (loading indicator while the EPUB buffer is fetched and parsed).

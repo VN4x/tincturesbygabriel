@@ -1,8 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import teasers from "@/content/teasers.json";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLang } from "@/lib/i18n";
+import { useAccess } from "@/lib/access-context";
+import { AskDoctorDialog } from "@/components/AskDoctorDialog";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
 import heroForest from "@/assets/hero-forest.jpg";
 import tinctures from "@/assets/tinctures.jpg";
 import engravingBirch from "@/assets/engraving-birch.png";
@@ -63,10 +66,15 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   const { t, lang } = useLang();
-  const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
-  const words = useMemo(() => sections.reduce((sum, s) => sum + s.words, 0), []);
-  const [loginOpen, setLoginOpen] = useState(false);
+  const { openAccess } = useAccess();
   const [askOpen, setAskOpen] = useState(false);
+  const navigate = useNavigate();
+  const goLogin = () => {
+    if (isSupabaseConfigured()) void navigate({ to: "/auth" });
+    else openAccess("login");
+  };
+  const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
+  const words = useMemo(() => sections.reduce((sum, s) => s.words, 0), []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,7 +126,7 @@ function Landing() {
             </Link>
             <button
               type="button"
-              onClick={() => setLoginOpen(true)}
+              onClick={goLogin}
               className="rounded-full border border-border px-8 py-3.5 font-[family-name:var(--font-ui)] text-[12px] tracking-[0.18em] text-foreground uppercase transition-colors hover:border-primary hover:text-primary"
             >
               {t("hero.cta2")}
@@ -297,7 +305,7 @@ function Landing() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => setLoginOpen(true)}
+                      onClick={() => openAccess(tier === "full" ? "purchase" : "invite")}
                       className={`mt-8 rounded-full px-6 py-3 text-center font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] uppercase transition-opacity ${
                         featured
                           ? "bg-primary text-primary-foreground hover:opacity-90"
@@ -336,7 +344,7 @@ function Landing() {
               onClick={() => setAskOpen(true)}
               className="group mb-5 ml-auto flex items-center gap-3 text-right"
             >
-              <span className="font-[family-name:var(--font-ui)] text-[10px] leading-relaxed tracking-[0.22em] text-muted-foreground uppercase transition-colors group-hover:text-primary">
+              <span className="font-[family-name:var(--font-ui)] text-[13px] leading-relaxed tracking-[0.22em] text-muted-foreground uppercase transition-colors group-hover:text-primary">
                 {lang === "et" ? "Küsi doktorilt" : "Ask the doctor"}
                 <span className="mx-2 text-primary">—</span>
                 DM
@@ -348,7 +356,7 @@ function Landing() {
                 loading="lazy"
                 width={256}
                 height={256}
-                className="h-14 w-14 shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
+                className="h-[4.62rem] w-[4.62rem] shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
               />
             </button>
             <div className="relative overflow-hidden rounded-sm border border-primary/25 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
@@ -388,7 +396,7 @@ function Landing() {
             {t("faq.title")}
           </h2>
           <div className="mt-12 divide-y divide-border/70 border-y border-border/70">
-            {[1, 2, 3, 4].map((n) => (
+            {[1, 2, 3, 4, 5].map((n) => (
               <details key={n} className="group py-6">
                 <summary className="flex cursor-pointer items-center justify-between gap-6 font-[family-name:var(--font-display)] text-lg text-foreground marker:content-none">
                   {t(`faq.${n}.q`)}
@@ -396,9 +404,35 @@ function Landing() {
                     +
                   </span>
                 </summary>
-                <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
-                  {t(`faq.${n}.a`)}
-                </p>
+                {n === 5 ? (
+                  <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+                    {lang === "et" ? "Paberraamat (Lulu / Amazon) on eraldi trükiväljaanne. " : "The paperback (Lulu / Amazon) is a separate print edition. "}
+                    <a
+                      className="text-primary underline-offset-4 hover:underline"
+                      href="https://www.amazon.com/s?k=Metsa+vagi+ja+tervis+Gabriel+Corpus"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Amazon
+                    </a>
+                    {lang === "et" ? " ja " : " and "}
+                    <a
+                      className="text-primary underline-offset-4 hover:underline"
+                      href="https://www.lulu.com/search?adult_audience_rating=00&page=1&pageSize=10&q=Metsa%20v%C3%A4gi"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Lulu
+                    </a>
+                    {lang === "et"
+                      ? ". Veebilugemine siin lehel on 5 € täisligipääs."
+                      : ". Web reading on this site is the €5 full access."}
+                  </p>
+                ) : (
+                  <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+                    {t(`faq.${n}.a`)}
+                  </p>
+                )}
               </details>
             ))}
           </div>
@@ -438,10 +472,15 @@ function Landing() {
           </p>
           <p>Autoriõigus © 2026 Gabriel Corpus. {t("footer.rights")}</p>
           <p>{t("footer.set")}</p>
+          <button
+            type="button"
+            onClick={() => setAskOpen(true)}
+            className="mx-auto font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary uppercase hover:text-foreground"
+          >
+            {lang === "et" ? "Küsi doktorilt — DM" : "Ask the doctor — DM"}
+          </button>
         </div>
       </footer>
-
-      {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
       {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
@@ -468,216 +507,3 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
-/** Mock list of existing accounts — a code is never sent to an unknown address. */
-const KNOWN_ACCOUNTS = ["gabriel@corpus.ee", "sober@naide.ee"];
-
-/** Designed entry point for the one-time-code sign-in. Not wired to a backend yet. */
-function LoginDialog({ onClose }: { onClose: () => void }) {
-  const { lang } = useLang();
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const copy =
-    lang === "et"
-      ? {
-          title: "Sisene ühekordse koodiga",
-          p: "Sisesta e-posti aadress. Saadame kuuenumbrilise koodi, mis kehtib 10 minutit.",
-          email: "E-posti aadress",
-          send: "Saada kood",
-          code: "Kood e-postist",
-          verify: "Kinnita",
-          friend: "Sõbrakonto kutse saab autorilt.",
-          soon: "Sisselogimine ja maksed lülitatakse sisse enne avaldamist.",
-          unknown: "Selle aadressiga kontot ei ole. Osta ligipääs või küsi autorilt sõbrakonto kutse.",
-          close: "Sulge",
-        }
-      : {
-          title: "Sign in with a one-time code",
-          p: "Enter your e-mail address. We send a six-digit code valid for 10 minutes.",
-          email: "E-mail address",
-          send: "Send code",
-          code: "Code from e-mail",
-          verify: "Confirm",
-          friend: "Friend-account invitations come from the author.",
-          soon: "Sign-in and payments are switched on before launch.",
-          unknown: "No account with this address. Buy access, or ask the author for a friend invite.",
-          close: "Close",
-        };
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 p-5 backdrop-blur-md">
-      <div className="animate-veil w-full max-w-md rounded-sm border border-border bg-card p-8 shadow-(--shadow-plate)">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl text-foreground">{copy.title}</h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy.p}</p>
-
-        <form
-          className="mt-7 space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (sent) return;
-            // Mock account check: a code is only ever sent to a known account.
-            if (!KNOWN_ACCOUNTS.includes(email.trim().toLowerCase())) {
-              setError(copy.unknown);
-              return;
-            }
-            setError(null);
-            setSent(true);
-          }}
-        >
-          <label className="block">
-            <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-              {copy.email}
-            </span>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError(null);
-              }}
-              placeholder="nimi@näide.ee"
-              className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
-            />
-          </label>
-
-          {error && (
-            <p className="font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-destructive">
-              {error}
-            </p>
-          )}
-
-          {sent && (
-            <label className="block">
-              <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                {copy.code}
-              </span>
-              <input
-                inputMode="numeric"
-                maxLength={6}
-                placeholder="······"
-                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 text-center font-[family-name:var(--font-ui)] text-lg tracking-[0.6em] text-foreground outline-none focus:border-primary"
-              />
-            </label>
-          )}
-
-          <button
-            type="submit"
-            className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
-          >
-            {sent ? copy.verify : copy.send}
-          </button>
-        </form>
-
-        <p className="mt-5 font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-muted-foreground">
-          {copy.friend} {copy.soon}
-        </p>
-
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-6 w-full font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
-        >
-          {copy.close}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-/** Direct message to the author. Designed only — messages would land in the ADMIN panel. */
-function AskDoctorDialog({ onClose }: { onClose: () => void }) {
-  const { lang } = useLang();
-  const [sent, setSent] = useState(false);
-
-  const copy =
-    lang === "et"
-      ? {
-          title: "Küsi doktorilt",
-          p: "Kirjuta oma küsimus taimedest, tinktuuridest või raamatust. Sõnum jõuab autori ADMIN-paneeli.",
-          email: "Sinu e-post",
-          msg: "Sinu küsimus",
-          send: "Saada sõnum",
-          done: "Sõnum on saadetud ADMIN-paneeli. Doktor vastab e-postiga.",
-          close: "Sulge",
-        }
-      : {
-          title: "Ask the doctor",
-          p: "Write your question about plants, tinctures or the book. It arrives in the author's ADMIN panel.",
-          email: "Your e-mail",
-          msg: "Your question",
-          send: "Send message",
-          done: "Message sent to the ADMIN panel. The doctor replies by e-mail.",
-          close: "Close",
-        };
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 p-5 backdrop-blur-md">
-      <div className="animate-veil w-full max-w-md rounded-sm border border-border bg-card p-8 shadow-(--shadow-plate)">
-        <div className="flex items-center gap-4">
-          <img
-            src={doctorAvatar}
-            alt=""
-            aria-hidden="true"
-            width={256}
-            height={256}
-            className="h-12 w-12 rounded-full border border-primary/40 object-cover"
-          />
-          <h2 className="font-[family-name:var(--font-display)] text-2xl text-foreground">{copy.title}</h2>
-        </div>
-        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{copy.p}</p>
-
-        {sent ? (
-          <p className="mt-7 font-[family-name:var(--font-ui)] text-[12px] leading-relaxed text-primary">
-            {copy.done}
-          </p>
-        ) : (
-          <form
-            className="mt-7 space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-          >
-            <label className="block">
-              <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                {copy.email}
-              </span>
-              <input
-                type="email"
-                required
-                placeholder="nimi@näide.ee"
-                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
-              />
-            </label>
-            <label className="block">
-              <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                {copy.msg}
-              </span>
-              <textarea
-                required
-                rows={4}
-                className="mt-2 w-full resize-none rounded-sm border border-input bg-background px-4 py-3 text-sm leading-relaxed text-foreground outline-none focus:border-primary"
-              />
-            </label>
-            <button
-              type="submit"
-              className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
-            >
-              {copy.send}
-            </button>
-          </form>
-        )}
-
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-6 w-full font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
-        >
-          {copy.close}
-        </button>
-      </div>
-    </div>
-  );
-}

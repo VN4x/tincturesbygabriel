@@ -38,13 +38,14 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
   // The title page / colophon carries no reading content.
   const readable = book.sections.filter((s) => s.id !== "avaleht");
   const chapters = readable.filter((s) => s.kind === "chapter");
+  const completeChapters = chapters.filter((s) => s.complete !== false);
   const openIds = new Set<string>();
 
-  // The introduction is always open, plus three random chapters per visit.
+  // The introduction is always open, plus three random *complete* sample chapters.
   const intro = readable.find((s) => s.id.startsWith("sissejuhatus"));
   if (intro) openIds.add(intro.id);
 
-  const pool = [...chapters];
+  const pool = [...completeChapters];
   for (let i = 0; i < 3 && pool.length > 0; i += 1) {
     const idx = Math.floor(Math.random() * pool.length);
     const picked = pool.splice(idx, 1)[0];

@@ -10,11 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LugemineRouteImport } from './routes/lugemine'
+import { Route as OpsRouteImport } from './routes/ops'
+import { Route as ReadRouteImport } from './routes/read'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiBookRouteImport } from './routes/api/book'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LugemineRoute = LugemineRouteImport.update({
@@ -22,31 +38,107 @@ const LugemineRoute = LugemineRouteImport.update({
   path: '/lugemine',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpsRoute = OpsRouteImport.update({
+  id: '/ops',
+  path: '/ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadRoute = ReadRouteImport.update({
+  id: '/read',
+  path: '/read',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiBookRoute = ApiBookRouteImport.update({
+  id: '/api/book',
+  path: '/api/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/lugemine': typeof LugemineRoute
+  '/ops': typeof OpsRoute
+  '/read': typeof ReadRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/api/book': typeof ApiBookRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/lugemine': typeof LugemineRoute
+  '/ops': typeof OpsRoute
+  '/read': typeof ReadRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/api/book': typeof ApiBookRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/lugemine': typeof LugemineRoute
+  '/ops': typeof OpsRoute
+  '/read': typeof ReadRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/api/book': typeof ApiBookRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lugemine'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/lugemine'
+    | '/ops'
+    | '/read'
+    | '/admin'
+    | '/api/book'
+    | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lugemine'
-  id: '__root__' | '/' | '/lugemine'
+  to:
+    | '/'
+    | '/auth'
+    | '/lugemine'
+    | '/ops'
+    | '/read'
+    | '/admin'
+    | '/api/book'
+    | '/api/stripe/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/lugemine'
+    | '/ops'
+    | '/read'
+    | '/_authenticated/admin'
+    | '/api/book'
+    | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   LugemineRoute: typeof LugemineRoute
+  OpsRoute: typeof OpsRoute
+  ReadRoute: typeof ReadRoute
+  ApiBookRoute: typeof ApiBookRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +150,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lugemine': {
       id: '/lugemine'
       path: '/lugemine'
@@ -65,12 +171,64 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LugemineRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ops': {
+      id: '/ops'
+      path: '/ops'
+      fullPath: '/ops'
+      preLoaderRoute: typeof OpsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/read': {
+      id: '/read'
+      path: '/read'
+      fullPath: '/read'
+      preLoaderRoute: typeof ReadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/book': {
+      id: '/api/book'
+      path: '/api/book'
+      fullPath: '/api/book'
+      preLoaderRoute: typeof ApiBookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   LugemineRoute: LugemineRoute,
+  OpsRoute: OpsRoute,
+  ReadRoute: ReadRoute,
+  ApiBookRoute: ApiBookRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

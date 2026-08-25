@@ -1,9 +1,7 @@
 /**
- * Server-only access to the full book text.
- *
- * The complete text lives here and is never imported by client code. Locked
- * chapters are truncated on the server before anything is sent to the browser,
- * so client-side blur is presentation only — not the protection.
+ * Server-only sample extract. Most chapters are teasers (`complete: false`).
+ * Locked chapters are truncated again in `getSample` before reaching the browser.
+ * The full EPUB is never imported here — see `/api/book`.
  */
 import bookEt from "./book-et.json";
 
@@ -21,6 +19,7 @@ export type Section = {
   page: number;
   words: number;
   blocks: Block[];
+  complete?: boolean;
 };
 
 export type Book = {

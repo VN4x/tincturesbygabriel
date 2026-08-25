@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { getSample, type PublicSection, type Sample } from "@/lib/book.functions";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLang } from "@/lib/i18n";
+import { useAccess } from "@/lib/access-context";
+import { AskDoctorDialog } from "@/components/AskDoctorDialog";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 
 export const Route = createFileRoute("/lugemine")({
@@ -33,10 +35,12 @@ const SIZES = ["text-[15px]", "text-[17px]", "text-[19px]", "text-[22px]"] as co
 function ReaderPage() {
   const initial = Route.useLoaderData() as Sample;
   const { t, lang } = useLang();
+  const { entitlement, openAccess } = useAccess();
   const [sample, setSample] = useState<Sample>(initial);
   const [size, setSize] = useState(1);
   const [active, setActive] = useState<string>(sample.sections[0]?.id ?? "");
   const [busy, setBusy] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
 
   const open = useMemo(() => sample.sections.filter((s) => !s.locked), [sample]);
 
@@ -142,7 +146,13 @@ function ReaderPage() {
 
           <div className="space-y-16">
             {sample.sections.map((s) => (
-              <SectionView key={s.id} section={s} sizeClass={SIZES[size] ?? SIZES[1]} />
+              <SectionView
+                key={s.id}
+                section={s}
+                sizeClass={SIZES[size] ?? SIZES[1]}
+                onUnlock={() => openAccess("purchase")}
+                onAsk={() => setAskOpen(true)}
+              />
             ))}
           </div>
         </main>
@@ -159,15 +169,33 @@ function ReaderPage() {
             >
               {t("reader.back")}
             </Link>
-            <a
-              href="/#ligipaas"
-              className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+            <button
+              type="button"
+              onClick={() => setAskOpen(true)}
+              className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:text-foreground"
             >
-              {t("reader.unlock")}
-            </a>
+              {t("reader.dm")}
+            </button>
+            {entitlement ? (
+              <Link
+                to="/read"
+                className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+              >
+                {t("nav.fullRead")}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => openAccess("purchase")}
+                className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+              >
+                {t("reader.unlock")}
+              </button>
+            )}
           </div>
         </div>
       </div>
+      {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
 }
@@ -177,7 +205,17 @@ function shortTitle(title: string) {
   return cut.length > 34 ? `${cut.slice(0, 33)}…` : cut;
 }
 
-function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass: string }) {
+function SectionView({
+  section,
+  sizeClass,
+  onUnlock,
+  onAsk,
+}: {
+  section: PublicSection;
+  sizeClass: string;
+  onUnlock: () => void;
+  onAsk: () => void;
+}) {
   const { t } = useLang();
   const teaser = section.blocks[0];
   const teaserText = teaser && teaser.t === "p" ? teaser.text : "";
@@ -227,12 +265,22 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
             <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
               {t("reader.lockedNote")}
             </p>
-            <a
-              href="/#ligipaas"
-              className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              {t("reader.unlock")}
-            </a>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={onAsk}
+                className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
+              >
+                {t("reader.dm")}
+              </button>
+              <button
+                type="button"
+                onClick={onUnlock}
+                className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                {t("reader.unlock")}
+              </button>
+            </div>
           </div>
 
           <img
