@@ -14,16 +14,195 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          created_by: string | null
+          email: string
+          id: string
+          note: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          email: string
+          id?: string
+          note?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          id?: string
+          note?: string | null
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          admin_reply: string | null
+          body: string
+          created_at: string
+          email: string
+          id: string
+          kind: string
+          replied_at: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_reply?: string | null
+          body: string
+          created_at?: string
+          email: string
+          id?: string
+          kind?: string
+          replied_at?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_reply?: string | null
+          body?: string
+          created_at?: string
+          email?: string
+          id?: string
+          kind?: string
+          replied_at?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          lang: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          lang?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          lang?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          email: string
+          id: string
+          provider: string
+          provider_ref: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          email: string
+          id?: string
+          provider?: string
+          provider_ref?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          email?: string
+          id?: string
+          provider?: string
+          provider_ref?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      read_events: {
+        Row: {
+          created_at: string
+          id: number
+          lang: string
+          locked: boolean
+          section_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          lang?: string
+          locked?: boolean
+          section_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          lang?: string
+          locked?: boolean
+          section_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "friend" | "reader"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +329,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "friend", "reader"],
+    },
   },
 } as const
