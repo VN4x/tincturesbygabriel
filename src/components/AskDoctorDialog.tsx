@@ -70,7 +70,10 @@ export function AskDoctorDialog({ onClose }: { onClose: () => void }) {
               setBusy(true);
               setError(null);
               const { error: insertError } = await supabase.from("messages").insert({
-                email: email.trim().toLowerCase(),
+                // Signed in: bind the row to the caller's own account + verified e-mail.
+                // Anonymous: user_id stays null, as the anon policy requires.
+                user_id: user?.id ?? null,
+                email: (accountEmail ?? email).trim().toLowerCase(),
                 body: body.trim(),
                 kind: "dm",
               });
@@ -91,11 +94,13 @@ export function AskDoctorDialog({ onClose }: { onClose: () => void }) {
                 required
                 maxLength={255}
                 value={email}
+                readOnly={Boolean(accountEmail)}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nimi@näide.ee"
-                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
+                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary read-only:opacity-70"
               />
             </label>
+
             <label className="block">
               <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
                 {copy.msg}
