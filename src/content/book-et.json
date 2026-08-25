@@ -88,7 +88,7 @@
    "kind": "front",
    "label": "Sissejuhatus",
    "title": "Sissejuhatus",
-   "page": 1,
+   "page": 3,
    "words": 503
   },
   {
@@ -110,7 +110,7 @@
    "kind": "front",
    "label": "METSA VÄGI JA TEADMISE PÄRAND",
    "title": "METSA VÄGI JA TEADMISE PÄRAND",
-   "page": 1,
+   "page": 6,
    "words": 237
   },
   {
@@ -128,7 +128,7 @@
    "kind": "front",
    "label": "KAHEDOOSI SÜSTEEM: PÄEVA JA ÖÖ RÜTM",
    "title": "KAHEDOOSI SÜSTEEM: PÄEVA JA ÖÖ RÜTM",
-   "page": 1,
+   "page": 7,
    "words": 92
   },
   {
@@ -234,7 +234,7 @@
    "kind": "front",
    "label": "TEHNIKA JA TEHNOLOOGIA: KUIDAS VALMISTADA VÄEGA TINKTUURE",
    "title": "TEHNIKA JA TEHNOLOOGIA: KUIDAS VALMISTADA VÄEGA TINKTUURE",
-   "page": 1,
+   "page": 8,
    "words": 558
   },
   {
@@ -264,7 +264,7 @@
    "kind": "front",
    "label": "PÖÖRDUMINE LUGEJA POOLE",
    "title": "PÖÖRDUMINE LUGEJA POOLE",
-   "page": 1,
+   "page": 11,
    "words": 274
   },
   {
@@ -355,7 +355,7 @@
    "kind": "front",
    "label": "TABELID",
    "title": "TABELID",
-   "page": 1,
+   "page": 12,
    "words": 82
   },
   {
@@ -489,7 +489,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 1",
    "title": "Siberi lehis (Larix sibirica) – kapillaaride valvur ja pikaealisuse puu",
-   "page": 1,
+   "page": 17,
    "words": 461
   },
   {
@@ -623,7 +623,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 2",
    "title": "Lepp (Alnus incana) – kootav kaitse ja sisemine rahu",
-   "page": 1,
+   "page": 21,
    "words": 427
   },
   {
@@ -753,7 +753,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 3",
    "title": "Pihlakas (Sorbus aucuparia) – vitamiinikindlus ja ainevahetuse mootor",
-   "page": 1,
+   "page": 25,
    "words": 416
   },
   {
@@ -915,7 +915,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 4",
    "title": "PeatükkKask (Betula pendula) – puhastaja, tarbepuit ja valguse tooja",
-   "page": 1,
+   "page": 29,
    "words": 479
   },
   {
@@ -1041,7 +1041,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 5",
    "title": "Toomingas (Prunus padus) – metsa kange antiseptik",
-   "page": 1,
+   "page": 33,
    "words": 424
   },
   {
@@ -1187,7 +1187,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 6",
    "title": "Kadakas (Juniperus communis) – metsa ründav puhastaja ja liigeste tohter",
-   "page": 1,
+   "page": 37,
    "words": 500
   },
   {
@@ -1313,7 +1313,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 7",
    "title": "Tamm (Quercus robur) – kestvuse, jõu ja puhta vere puu",
-   "page": 1,
+   "page": 41,
    "words": 429
   },
   {
@@ -1439,7 +1439,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 8",
    "title": "Pärn (Tilia cordata) – pehmuse, leevenduse ja valguse puu",
-   "page": 1,
+   "page": 45,
    "words": 438
   },
   {
@@ -1561,7 +1561,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 9",
    "title": "Mänd (Pinus sylvestris) – valguse, vaigu ja puhta hingamise puu",
-   "page": 1,
+   "page": 49,
    "words": 453
   },
   {
@@ -1687,7 +1687,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 10",
    "title": "Nulg (Abies sibirica) – peenekoeline liigeste tohter",
-   "page": 1,
+   "page": 53,
    "words": 465
   },
   {
@@ -1817,7 +1817,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 11",
    "title": "Hobukastan (Aesculus hippocastanum) – vereringe valvur ja liigeste kergendaja",
-   "page": 1,
+   "page": 57,
    "words": 391
   },
   {
@@ -1937,15 +1937,17 @@
     {
      "t": "h3",
      "text": "P.S. Inimesed, kes on allergilised salitsülaatidele (aspiriinile), ei tohi pajukoort kasutada. Samuti ei soovitata pajukoort alla 12-aastastele lastele viirusinfektsioonide korral. Paju on \"nõtke tohter\", kes nõuab aega, kuid pakub püsivat leevendust."
-    },
-    {
-     "t": "p",
-     "text": "PEATÜKK 13"
-    },
-    {
-     "t": "h3",
-     "text": "Loorber (Laurus nobilis) – puhastaja ja soolade lahustaja"
-    },
+    }
+   ],
+   "id": "peatukk-12",
+   "kind": "chapter",
+   "label": "PEATÜKK 12",
+   "title": "Paju (Salix) – valuvaigistaja ja paindlikkuse andja",
+   "page": 61,
+   "words": 364
+  },
+  {
+   "blocks": [
     {
      "t": "p",
      "text": "Loorber on iidne võidupuu, mis on pärit Vahemere maadest, kuid leidnud kindla koha põhjamaistes ravimikappides. Kui köögis on ta asendamatu maitseaine, siis fütoteraapias on loorber üks radikaalsemaid vahendeid organismi puhastamiseks kusihape- ja soolajääkidest. See on tugevatoimeline taim, mis nõuab täpsust ja tehnoloogilist korrektsust."
@@ -2203,12 +2205,12 @@
      "text": "P.S. Mitte ületada doosi – liigne kogus võib ärritada limaskesti. Nelk on \"tule-element\", mis põletab välja nii valu kui sissetungijad."
     }
    ],
-   "id": "peatukk-12",
+   "id": "peatukk-13",
    "kind": "chapter",
-   "label": "PEATÜKK 12",
-   "title": "Paju (Salix) – valuvaigistaja ja paindlikkuse andja",
-   "page": 1,
-   "words": 1176
+   "label": "PEATÜKK 13",
+   "title": "Loorber (Laurus nobilis) – puhastaja ja soolade lahustaja",
+   "page": 65,
+   "words": 810
   },
   {
    "blocks": [
@@ -2341,7 +2343,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 15",
    "title": "Haab (Populus tremula) – hirmude peletaja ja sisemine puhastaja",
-   "page": 1,
+   "page": 73,
    "words": 449
   },
   {
@@ -2479,7 +2481,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 16",
    "title": "Sarapuu (Corylus avellana) – veresoonte tugevdaja ja elujõu andja",
-   "page": 1,
+   "page": 77,
    "words": 516
   },
   {
@@ -2617,7 +2619,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 17",
    "title": "Mustikas (Vaccinium myrtillus) – ainevahetuse tasakaalustaja ja selge pilgu andja",
-   "page": 1,
+   "page": 81,
    "words": 494
   },
   {
@@ -2759,7 +2761,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 18",
    "title": "Pohl (Vaccinium vitis-idaea) – neerude puhastaja ja elujõu hoidja",
-   "page": 1,
+   "page": 85,
    "words": 556
   },
   {
@@ -2893,7 +2895,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 19",
    "title": "Angervaks (Filipendula ulmaria) – looduslik aspiriin ja rahu tooja",
-   "page": 1,
+   "page": 89,
    "words": 490
   },
   {
@@ -3035,7 +3037,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 20",
    "title": "Kalmus (Acorus calamus) – seedimise ja vaimse selguse arhitekt",
-   "page": 1,
+   "page": 93,
    "words": 507
   },
   {
@@ -3173,7 +3175,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 21",
    "title": "Must sõstar – aiaapteegi süda ja liigeste kergendus",
-   "page": 1,
+   "page": 97,
    "words": 411
   },
   {
@@ -3307,7 +3309,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 22",
    "title": "Leesikas (Arctostaphylos uva-ursi) – sisevete puhastaja ja kindel valvur",
-   "page": 1,
+   "page": 101,
    "words": 383
   },
   {
@@ -3429,7 +3431,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 23",
    "title": "Kortsleht (Alchemilla) – kastepiisa hoidja ja haavade parandaja",
-   "page": 1,
+   "page": 105,
    "words": 390
   },
   {
@@ -3555,7 +3557,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 24",
    "title": "Jalakas (Ulmus glabra) – sisemine palsam ja limaskestade hoidja",
-   "page": 1,
+   "page": 109,
    "words": 414
   },
   {
@@ -3681,7 +3683,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 25",
    "title": "Pappel (Populus) – vaigune kindlus ja põletiku taltsutaja",
-   "page": 1,
+   "page": 113,
    "words": 347
   },
   {
@@ -3807,7 +3809,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 26",
    "title": "Saar (Fraxinus excelsior) – maailmapuu ja liigeste vabastaja",
-   "page": 1,
+   "page": 117,
    "words": 335
   },
   {
@@ -3957,7 +3959,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 27",
    "title": "Must pässik (Inonotus obliquus) – kase elujõu kontsentraat ja immuunsüsteemi ülemvalvur",
-   "page": 1,
+   "page": 121,
    "words": 525
   },
   {
@@ -4091,7 +4093,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 28",
    "title": "Taruvaik (Propolis) – mesilaste karkass ja looduslik antibiootikum",
-   "page": 1,
+   "page": 125,
    "words": 366
   },
   {
@@ -4225,7 +4227,7 @@
    "kind": "chapter",
    "label": "PEATÜKK 29",
    "title": "Kopranõre (Castoreum) – looma vägi ja looduse apteek",
-   "page": 1,
+   "page": 129,
    "words": 362
   }
  ]

@@ -38,7 +38,7 @@ def main() -> int:
 
     # Walk paragraphs in document order, tracking the current printed page.
     tokens = re.finditer(
-        r'<div[^>]*epub:type="pagebreak"[^>]*aria-label="(?P<page>[^"]+)"[^>]*/>'
+        r'<div[^>]*role="doc-pagebreak"[^>]*aria-label="(?P<page>[^"]+)"[^>]*/>'
         r'|<p class="(?P<pclass>[^"]*)">(?P<pbody>.*?)</p>'
         r"|<table[^>]*>(?P<table>.*?)</table>",
         body,
@@ -83,7 +83,7 @@ def main() -> int:
 
         # span1 = book/part title, span5 = section heading, span9 = chapter subject,
         # span6 = bold run-in subheading, span3 = body, span4 = colophon, span7 = small.
-        if primary == "span5":
+        if "span5" in spans:
             slug = re.sub(r"[^a-z0-9]+", "-", text.lower().replace("ü", "u").replace("ä", "a").replace("õ", "o").replace("ö", "o")).strip("-")
             is_chapter = text.upper().startswith("PEAT")
             current = push_section(
@@ -101,11 +101,11 @@ def main() -> int:
             pending_title = False
             continue
 
-        if primary == "span1":
+        if "span1" in spans:
             current["blocks"].append({"t": "part", "text": text})
             continue
 
-        if primary in ("span6", "span9"):
+        if spans and spans[0] in ("span6", "span9") or ("span9" in spans and len(set(spans)) == 1):
             current["blocks"].append({"t": "h3", "text": text.rstrip(":")})
             continue
 
