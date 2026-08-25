@@ -467,11 +467,15 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
+/** Mock list of existing accounts — a code is never sent to an unknown address. */
+const KNOWN_ACCOUNTS = ["gabriel@corpus.ee", "sober@naide.ee"];
+
 /** Designed entry point for the one-time-code sign-in. Not wired to a backend yet. */
 function LoginDialog({ onClose }: { onClose: () => void }) {
   const { lang } = useLang();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const copy =
     lang === "et"
@@ -484,6 +488,7 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
           verify: "Kinnita",
           friend: "Sõbrakonto kutse saab autorilt.",
           soon: "Sisselogimine ja maksed lülitatakse sisse enne avaldamist.",
+          unknown: "Selle aadressiga kontot ei ole. Osta ligipääs või küsi autorilt sõbrakonto kutse.",
           close: "Sulge",
         }
       : {
@@ -495,6 +500,7 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
           verify: "Confirm",
           friend: "Friend-account invitations come from the author.",
           soon: "Sign-in and payments are switched on before launch.",
+          unknown: "No account with this address. Buy access, or ask the author for a friend invite.",
           close: "Close",
         };
 
