@@ -97,7 +97,7 @@ def main() -> int:
             continue
 
         if pending_title:
-            current["title"] = text
+            current["title"] = re.sub(r"^Peat[^\s]*?kk(?=[A-ZÄÕÖÜ])", "", text)
             pending_title = False
             continue
 
