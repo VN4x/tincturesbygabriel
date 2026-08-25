@@ -4,13 +4,10 @@ import { z } from "zod";
 import {
   cookieNames,
   inviteTokens,
-  mockOtpEnabled,
   readEntitlement,
   signBookToken,
   signEntitlement,
-  signOtpChallenge,
   stripeConfigured,
-  verifyOtpChallenge,
   type AccessSource,
   type Entitlement,
 } from "./access";
@@ -136,52 +133,30 @@ export const requestOtp = createServerFn({ method: "POST" })
   .validator(z.object({ email: z.string().email() }))
   .handler(async ({ data }) => {
     const email = data.email.toLowerCase().trim();
-    const { getActiveReader } = await import("./admin-store.server");
-    if (!(await getActiveReader(email))) {
+    const { issueOtpChallenge } = await import("./otp-flow");
+    const issued = await issueOtpChallenge(email);
+    if (!issued.ok && issued.unknown) {
       return { sent: false as const, unknown: true as const };
     }
-
-    const code = String(Math.floor(100000 + Math.random() * 900000));
-    const token = await signOtpChallenge(email, code);
-    setCookie(OTP_COOKIE, token, cookieOpts(10 * 60));
-
-    const key = process.env["RESEND_API_KEY"];
-    if (key) {
-      const from = process.env["OTP_FROM"] || "Metsa vägi <noreply@localhost>";
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${key}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from,
-          to: [email],
-          subject: "Metsa vägi — sisselogimiskood",
-          text: `Sinu ühekordne kood: ${code}\nKehtib 10 minutit.`,
-        }),
-      });
-      return { sent: true as const, mock: false, unknown: false as const };
+    if (!issued.ok) {
+      return { sent: false as const, unknown: false as const, error: issued.error };
     }
-
-    if (process.env["NODE_ENV"] !== "production") {
-      console.info(`[otp] ${email} → ${code}`);
-    }
-    return { sent: true as const, mock: true as const, unknown: false as const };
+    setCookie(OTP_COOKIE, issued.token, cookieOpts(10 * 60));
+    return { sent: true as const, mock: issued.mock, unknown: false as const };
   });
 
 export const verifyOtp = createServerFn({ method: "POST" })
   .validator(z.object({ email: z.string().email(), code: z.string().regex(/^\d{6}$/) }))
   .handler(async ({ data }) => {
     const email = data.email.toLowerCase().trim();
-    const challenge = getCookie(OTP_COOKIE);
-    const match = await verifyOtpChallenge(challenge, email, data.code);
-    if (!match && !mockOtpEnabled()) {
-      return { ok: false as const, error: "invalid_code" };
-    }
-    if (!match && mockOtpEnabled() && !/^\d{6}$/.test(data.code)) {
-      return { ok: false as const, error: "invalid_code" };
-    }
+    const { verifyOtpSubmission } = await import("./otp-flow");
+    const otpCookie = getCookie(OTP_COOKIE);
+    const checked = await verifyOtpSubmission({
+      email,
+      code: data.code,
+      ...(otpCookie ? { otpCookie } : {}),
+    });
+    if (!checked.ok) return { ok: false as const, error: checked.error };
     try {
       const ent = await grant(email, "otp");
       return { ok: true as const, entitlement: ent };
@@ -203,24 +178,19 @@ export const redeemInvite = createServerFn({ method: "POST" })
   });
 
 export const startCheckout = createServerFn({ method: "POST" })
-  .validator(z.object({ email: z.string().email().optional() }))
+  .validator(z.object({ email: z.string().email() }))
   .handler(async ({ data }) => {
-    const email = (data.email || "reader@local").toLowerCase().trim();
+    const email = data.email.toLowerCase().trim();
     if (!stripeConfigured()) {
       const ent = await grant(email, "purchase");
       return { ok: true as const, mock: true as const, entitlement: ent };
     }
 
     const origin = process.env["PUBLIC_SITE_URL"] || "http://localhost:3000";
-    const body = new URLSearchParams({
-      mode: "payment",
-      success_url: `${origin}/read?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/#ligipaas`,
-      "line_items[0][price]": process.env["STRIPE_PRICE_ID"] as string,
-      "line_items[0][quantity]": "1",
-      customer_email: email,
-      "metadata[email]": email,
-    });
+    const priceId = process.env["STRIPE_PRICE_ID"];
+    if (!priceId) return { ok: false as const, error: "stripe_failed" };
+    const { stripeCheckoutForm } = await import("./checkout-body");
+    const body = stripeCheckoutForm({ origin, email, priceId });
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
       headers: {
@@ -253,6 +223,7 @@ export const completeStripeSession = createServerFn({ method: "POST" })
       customer_email?: string;
       amount_total?: number;
       metadata?: { email?: string };
+      customer_details?: { email?: string };
     };
     const { checkoutSessionToFulfillment } = await import("./purchase-fulfillment");
     const mapped = checkoutSessionToFulfillment({
@@ -261,6 +232,7 @@ export const completeStripeSession = createServerFn({ method: "POST" })
       customer_email: session.customer_email,
       amount_total: session.amount_total,
       metadata: session.metadata,
+      customer_details: session.customer_details,
     });
     if ("error" in mapped) {
       return { ok: false as const, error: mapped.error };

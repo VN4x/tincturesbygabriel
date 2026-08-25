@@ -1,3 +1,5 @@
+import { mockOtpAllowed } from "./otp-mail";
+
 const COOKIE = "mv_access";
 const OTP_COOKIE = "mv_otp";
 const BOOK_TOKEN_TTL_SEC = 90;
@@ -94,6 +96,7 @@ export async function verifyOtpChallenge(
 ): Promise<boolean> {
   const data = await verifyPayload<{ email: string; code: string; exp: number }>(token);
   if (!data) return false;
+  if (data.exp < Math.floor(Date.now() / 1000)) return false;
   return data.email === email.toLowerCase().trim() && data.code === code;
 }
 
@@ -125,7 +128,7 @@ export function inviteTokens(): string[] {
 }
 
 export function mockOtpEnabled(): boolean {
-  return !env("RESEND_API_KEY");
+  return mockOtpAllowed(process.env);
 }
 
 export function stripeConfigured(): boolean {

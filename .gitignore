@@ -45,3 +45,9 @@ src/content/book-et.full.json
 
 # Clean Lovable snapshot — never merge origin/main into this working tree
 /lovable/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+

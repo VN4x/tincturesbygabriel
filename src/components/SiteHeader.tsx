@@ -106,6 +106,7 @@ function AccountControls() {
   return (
     <button
       type="button"
+      data-testid="nav-login"
       onClick={() => openAccess("login")}
       className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase hover:text-foreground"
     >

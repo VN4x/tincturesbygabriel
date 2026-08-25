@@ -128,7 +128,7 @@ function AccessDialogInner({
     setBusy(true);
     setError(null);
     try {
-      const res = await startCheckout({ data: { email: email || "reader@local" } });
+      const res = await startCheckout({ data: { email } });
       if (!res.ok) {
         setError(copy.invalid);
         return;
@@ -164,7 +164,7 @@ function AccessDialogInner({
                 <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
                   {t("reader.unlock")}
                 </span>
-                <div className="mt-2 flex justify-center">
+                <div className="mt-2 flex justify-center" data-testid="access-otp">
                   <InputOTP maxLength={6} value={code} onChange={setCode}>
                     <InputOTPGroup>
                       {Array.from({ length: 6 }, (_, i) => (
@@ -236,6 +236,7 @@ function EmailField({
       <input
         type="email"
         required={required}
+        data-testid="access-email"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="nimi@näide.ee"
@@ -250,6 +251,7 @@ function Submit({ children, busy }: { children: React.ReactNode; busy: boolean }
     <button
       type="submit"
       disabled={busy}
+      data-testid="access-submit"
       className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90 disabled:opacity-60"
     >
       {children}

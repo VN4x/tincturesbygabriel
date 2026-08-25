@@ -38,7 +38,7 @@ describe("checkoutSessionToFulfillment", () => {
     ).toEqual({ error: "missing_email" });
   });
 
-  it("maps customer_email and metadata.email, preferring metadata, lowercased", () => {
+  it("prefers Stripe-collected customer_details.email over metadata", () => {
     expect(
       checkoutSessionToFulfillment({
         id: "cs_meta",
@@ -46,11 +46,26 @@ describe("checkoutSessionToFulfillment", () => {
         customer_email: "Other@Example.com",
         amount_total: 500,
         metadata: { email: "Buyer@Example.com" },
+        customer_details: { email: "Paid.User@Example.com" },
       }),
     ).toEqual({
-      email: "buyer@example.com",
+      email: "paid.user@example.com",
       stripeSessionId: "cs_meta",
       amountCents: 500,
+    });
+  });
+
+  it("falls back to customer_email then metadata when Checkout did not fill customer_details", () => {
+    expect(
+      checkoutSessionToFulfillment({
+        id: "cs_cust",
+        payment_status: "paid",
+        customer_email: "Cust@Example.com",
+        metadata: { email: "Meta@Example.com" },
+      }),
+    ).toEqual({
+      email: "cust@example.com",
+      stripeSessionId: "cs_cust",
     });
   });
 

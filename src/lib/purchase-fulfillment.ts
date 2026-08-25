@@ -27,6 +27,11 @@ export async function fulfillPaidAccess(input: PaidFulfillment): Promise<{ email
     console.error("[purchase] supabase record failed", err);
   });
 
+  const { ensureCloudAuthUser } = await import("./ensure-cloud-user");
+  await ensureCloudAuthUser(email).catch((err) => {
+    console.error("[purchase] supabase auth user failed", err);
+  });
+
   return { email, source: "purchase" as const };
 }
 
@@ -63,13 +68,21 @@ export type CheckoutSessionLike = {
   customer_email?: string | null | undefined;
   amount_total?: number | null | undefined;
   metadata?: { email?: string | undefined } | null | undefined;
+  customer_details?: { email?: string | null | undefined } | null | undefined;
 };
 
 export function checkoutSessionToFulfillment(session: CheckoutSessionLike): PaidFulfillment | { error: string } {
   if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") {
     return { error: "unpaid" };
   }
-  const email = (session.metadata?.email || session.customer_email || "").toLowerCase().trim();
+  const email = (
+    session.customer_details?.email ||
+    session.customer_email ||
+    session.metadata?.email ||
+    ""
+  )
+    .toLowerCase()
+    .trim();
   if (!email) return { error: "missing_email" };
   const result: PaidFulfillment = { email };
   if (session.id) result.stripeSessionId = session.id;
