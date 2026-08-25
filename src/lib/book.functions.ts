@@ -130,12 +130,8 @@ export const getFullBook = createServerFn({ method: "POST" })
   .handler(async ({ context }): Promise<Sample> => {
     const [rolesRes, paidRes] = await Promise.all([
       context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
-      context.supabase
-        .from("purchases")
-        .select("id")
-        .eq("user_id", context.userId)
-        .eq("status", "paid")
-        .limit(1),
+      // RLS narrows this to the caller's own purchases (by account or by verified e-mail).
+      context.supabase.from("purchases").select("id").eq("status", "paid").limit(1),
     ]);
     const roles = (rolesRes.data ?? []).map((r) => r.role as string);
     const entitled = roles.includes("admin") || roles.includes("friend") || (paidRes.data ?? []).length > 0;
