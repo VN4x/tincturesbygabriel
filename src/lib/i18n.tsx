@@ -32,7 +32,7 @@ export const dict: Dict = {
     et: "„Tinktuur on kontsentreeritud aeg.“",
     en: "\u201cA tincture is concentrated time.\u201d",
   },
-  "hero.cta": { et: "Ava tasuta lõik", en: "Open a free passage" },
+  "hero.cta": { et: "TUTVU RAAMATUGA", en: "Open a free passage" },
   "hero.cta2": { et: "Logi sisse", en: "Sign in" },
   "hero.meta": {
     et: "131 lehekülge · eesti ja inglise keeles · digitaalne lugemisõigus",
