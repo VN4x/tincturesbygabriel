@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
 export type PublicBlock =
   | { t: "p"; text: string }
   | { t: "h3"; text: string }
@@ -93,3 +95,36 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
     sections,
   };
 });
+
+/**
+ * Full book for entitled readers only: admin, friend account, or a paid purchase.
+ * The entitlement is checked server-side; unentitled callers get nothing.
+ */
+export const getFullBook = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<Sample> => {
+    const [rolesRes, paidRes] = await Promise.all([
+      context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
+      context.supabase
+        .from("purchases")
+        .select("id")
+        .eq("user_id", context.userId)
+        .eq("status", "paid")
+        .limit(1),
+    ]);
+    const roles = (rolesRes.data ?? []).map((r) => r.role as string);
+    const entitled = roles.includes("admin") || roles.includes("friend") || (paidRes.data ?? []).length > 0;
+    if (!entitled) throw new Error("Ligipääs puudub");
+
+    const { getBook } = await import("../content/book.server");
+    const book = getBook();
+    const readable = book.sections.filter((s) => s.id !== "avaleht");
+
+    return {
+      title: book.title,
+      author: book.author,
+      openCount: readable.length,
+      totalChapters: readable.filter((s) => s.kind === "chapter").length,
+      sections: readable.map((s) => ({ ...s, locked: false, hiddenBlocks: 0 })),
+    };
+  });
