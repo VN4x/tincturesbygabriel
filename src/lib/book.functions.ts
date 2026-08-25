@@ -35,7 +35,7 @@ export type Sample = {
  */
 export const getSample = createServerFn({ method: "POST" }).handler(async (): Promise<Sample> => {
   const { getBook } = await import("../content/book.server");
-  const book = getBook();
+  const book = await getBook();
 
   // The title page / colophon carries no reading content.
   const readable = book.sections.filter((s) => s.id !== "avaleht");
@@ -117,7 +117,7 @@ export const getFullBook = createServerFn({ method: "POST" })
     if (!entitled) throw new Error("Ligipääs puudub");
 
     const { getBook } = await import("../content/book.server");
-    const book = getBook();
+    const book = await getBook();
     const readable = book.sections.filter((s) => s.id !== "avaleht");
 
     return {
