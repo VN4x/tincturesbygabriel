@@ -194,6 +194,13 @@ function ReaderPage() {
             >
               {t("reader.back")}
             </Link>
+            <button
+              type="button"
+              onClick={() => setAskOpen(true)}
+              className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:text-foreground"
+            >
+              {t("reader.dm")}
+            </button>
             <a
               href="/#ligipaas"
               className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
@@ -203,6 +210,8 @@ function ReaderPage() {
           </div>
         </div>
       </div>
+
+      {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
 }
