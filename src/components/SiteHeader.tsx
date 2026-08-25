@@ -1,5 +1,7 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useLang } from "@/lib/i18n";
+import { useSession } from "@/lib/session";
 
 export function LangToggle() {
   const { lang, setLang } = useLang();
@@ -20,6 +22,49 @@ export function LangToggle() {
           {code}
         </button>
       ))}
+    </div>
+  );
+}
+
+function AccountControls() {
+  const { user, isAdmin, signOut } = useSession();
+  const { t } = useLang();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  if (!user) {
+    return (
+      <Link
+        to="/auth"
+        className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+      >
+        {t("nav.signin")}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      {isAdmin && (
+        <Link
+          to="/admin"
+          className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary uppercase transition-opacity hover:opacity-80"
+        >
+          Admin
+        </Link>
+      )}
+      <button
+        type="button"
+        onClick={async () => {
+          await queryClient.cancelQueries();
+          queryClient.clear();
+          await signOut();
+          void navigate({ to: "/", replace: true });
+        }}
+        className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+      >
+        {t("nav.signout")}
+      </button>
     </div>
   );
 }
@@ -63,6 +108,7 @@ export function SiteHeader({ variant = "landing" }: { variant?: "landing" | "rea
         </nav>
 
         <div className="flex items-center gap-3">
+          <AccountControls />
           <LangToggle />
           {variant === "landing" ? (
             <Link

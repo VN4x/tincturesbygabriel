@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import teasers from "@/content/teasers.json";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -9,6 +9,7 @@ import engravingBirch from "@/assets/engraving-birch.png";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 import authorPortrait from "@/assets/gabriel-corpus.jpg";
 import doctorAvatar from "@/assets/mock/gabriel-45.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 type Teaser = {
   id: string;
@@ -65,8 +66,9 @@ function Landing() {
   const { t, lang } = useLang();
   const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
   const words = useMemo(() => sections.reduce((sum, s) => sum + s.words, 0), []);
-  const [loginOpen, setLoginOpen] = useState(false);
   const [askOpen, setAskOpen] = useState(false);
+  const navigate = useNavigate();
+  const goLogin = () => void navigate({ to: "/auth" });
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,7 +120,7 @@ function Landing() {
             </Link>
             <button
               type="button"
-              onClick={() => setLoginOpen(true)}
+              onClick={goLogin}
               className="rounded-full border border-border px-8 py-3.5 font-[family-name:var(--font-ui)] text-[12px] tracking-[0.18em] text-foreground uppercase transition-colors hover:border-primary hover:text-primary"
             >
               {t("hero.cta2")}
@@ -297,7 +299,7 @@ function Landing() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => setLoginOpen(true)}
+                      onClick={goLogin}
                       className={`mt-8 rounded-full px-6 py-3 text-center font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] uppercase transition-opacity ${
                         featured
                           ? "bg-primary text-primary-foreground hover:opacity-90"
@@ -348,7 +350,7 @@ function Landing() {
                 loading="lazy"
                 width={256}
                 height={256}
-                className="h-14 w-14 shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
+                className="h-[3.85rem] w-[3.85rem] shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
               />
             </button>
             <div className="relative overflow-hidden rounded-sm border border-primary/25 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
@@ -441,7 +443,6 @@ function Landing() {
         </div>
       </footer>
 
-      {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
       {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
@@ -468,128 +469,14 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
-/** Mock list of existing accounts — a code is never sent to an unknown address. */
-const KNOWN_ACCOUNTS = ["gabriel@corpus.ee", "sober@naide.ee"];
-
-/** Designed entry point for the one-time-code sign-in. Not wired to a backend yet. */
-function LoginDialog({ onClose }: { onClose: () => void }) {
-  const { lang } = useLang();
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const copy =
-    lang === "et"
-      ? {
-          title: "Sisene ühekordse koodiga",
-          p: "Sisesta e-posti aadress. Saadame kuuenumbrilise koodi, mis kehtib 10 minutit.",
-          email: "E-posti aadress",
-          send: "Saada kood",
-          code: "Kood e-postist",
-          verify: "Kinnita",
-          friend: "Sõbrakonto kutse saab autorilt.",
-          soon: "Sisselogimine ja maksed lülitatakse sisse enne avaldamist.",
-          unknown: "Selle aadressiga kontot ei ole. Osta ligipääs või küsi autorilt sõbrakonto kutse.",
-          close: "Sulge",
-        }
-      : {
-          title: "Sign in with a one-time code",
-          p: "Enter your e-mail address. We send a six-digit code valid for 10 minutes.",
-          email: "E-mail address",
-          send: "Send code",
-          code: "Code from e-mail",
-          verify: "Confirm",
-          friend: "Friend-account invitations come from the author.",
-          soon: "Sign-in and payments are switched on before launch.",
-          unknown: "No account with this address. Buy access, or ask the author for a friend invite.",
-          close: "Close",
-        };
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 p-5 backdrop-blur-md">
-      <div className="animate-veil w-full max-w-md rounded-sm border border-border bg-card p-8 shadow-(--shadow-plate)">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl text-foreground">{copy.title}</h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy.p}</p>
-
-        <form
-          className="mt-7 space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (sent) return;
-            // Mock account check: a code is only ever sent to a known account.
-            if (!KNOWN_ACCOUNTS.includes(email.trim().toLowerCase())) {
-              setError(copy.unknown);
-              return;
-            }
-            setError(null);
-            setSent(true);
-          }}
-        >
-          <label className="block">
-            <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-              {copy.email}
-            </span>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError(null);
-              }}
-              placeholder="nimi@näide.ee"
-              className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
-            />
-          </label>
-
-          {error && (
-            <p className="font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-destructive">
-              {error}
-            </p>
-          )}
-
-          {sent && (
-            <label className="block">
-              <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                {copy.code}
-              </span>
-              <input
-                inputMode="numeric"
-                maxLength={6}
-                placeholder="······"
-                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 text-center font-[family-name:var(--font-ui)] text-lg tracking-[0.6em] text-foreground outline-none focus:border-primary"
-              />
-            </label>
-          )}
-
-          <button
-            type="submit"
-            className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
-          >
-            {sent ? copy.verify : copy.send}
-          </button>
-        </form>
-
-        <p className="mt-5 font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-muted-foreground">
-          {copy.friend} {copy.soon}
-        </p>
-
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-6 w-full font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
-        >
-          {copy.close}
-        </button>
-      </div>
-    </div>
-  );
-}
-
 /** Direct message to the author. Designed only — messages would land in the ADMIN panel. */
 function AskDoctorDialog({ onClose }: { onClose: () => void }) {
   const { lang } = useLang();
   const [sent, setSent] = useState(false);
+  const [email, setEmail] = useState("");
+  const [body, setBody] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const copy =
     lang === "et"
@@ -635,8 +522,21 @@ function AskDoctorDialog({ onClose }: { onClose: () => void }) {
         ) : (
           <form
             className="mt-7 space-y-4"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
+              if (busy) return;
+              setBusy(true);
+              setError(null);
+              const { error: insertError } = await supabase.from("messages").insert({
+                email: email.trim().toLowerCase(),
+                body: body.trim(),
+                kind: "dm",
+              });
+              setBusy(false);
+              if (insertError) {
+                setError(lang === "et" ? "Saatmine ebaõnnestus. Proovi hiljem uuesti." : "Sending failed. Try again later.");
+                return;
+              }
               setSent(true);
             }}
           >
@@ -647,6 +547,9 @@ function AskDoctorDialog({ onClose }: { onClose: () => void }) {
               <input
                 type="email"
                 required
+                maxLength={255}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="nimi@näide.ee"
                 className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
               />
@@ -658,12 +561,19 @@ function AskDoctorDialog({ onClose }: { onClose: () => void }) {
               <textarea
                 required
                 rows={4}
+                maxLength={4000}
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
                 className="mt-2 w-full resize-none rounded-sm border border-input bg-background px-4 py-3 text-sm leading-relaxed text-foreground outline-none focus:border-primary"
               />
             </label>
+            {error && (
+              <p className="font-[family-name:var(--font-ui)] text-[11px] text-destructive">{error}</p>
+            )}
             <button
               type="submit"
-              className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+              disabled={busy}
+              className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {copy.send}
             </button>
