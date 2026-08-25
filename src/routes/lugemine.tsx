@@ -221,7 +221,7 @@ function shortTitle(title: string) {
   return cut.length > 34 ? `${cut.slice(0, 33)}…` : cut;
 }
 
-function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass: string }) {
+function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; sizeClass: string; onAsk: () => void }) {
   const { t } = useLang();
   const teaser = section.blocks[0];
   const teaserText = teaser && teaser.t === "p" ? teaser.text : "";
