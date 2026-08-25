@@ -1,0 +1,344 @@
+{
+ "sections": [
+  {
+   "id": "avaleht",
+   "kind": "front",
+   "label": "",
+   "title": "Metsa vägi ja tervis",
+   "page": 1,
+   "words": 42,
+   "teaser": "Kõik õigused kaitstud. Käesoleva raamatu või selle osade reprodutseerimine, levitamine või edastamine mis tahes viisil on ilma autori kirjaliku loata keelatud.",
+   "fade": ""
+  },
+  {
+   "id": "sissejuhatus",
+   "kind": "front",
+   "label": "Sissejuhatus",
+   "title": "Sissejuhatus",
+   "page": 3,
+   "words": 503,
+   "teaser": "Tervist on inimesed igal ajal au sees pidanud ja seda lakkamatult otsinud. Tervise otsingud on aga alati tähendanud ka võitlust haigustega, keda on õigusega nimetatud vaenlasteks.",
+   "fade": "Haigus võtab elu ära nii otseses kui kaudses mõttes – kurnatud ja tõbine inimene langeb palju kergemini madalate himude küüsi. Viha, kadedus, hoolimatus ja isegi vargus saavad alguse sisemisest puudusetundest; haigele tundub, et tal on seda"
+  },
+  {
+   "id": "metsa-vagi-ja-teadmise-parand",
+   "kind": "front",
+   "label": "METSA VÄGI JA TEADMISE PÄRAND",
+   "title": "METSA VÄGI JA TEADMISE PÄRAND",
+   "page": 6,
+   "words": 237,
+   "teaser": "Selle raamatu taimede valik on teadlikult suunatud metsale ja puudele. Puud on metsa vundament – nad on võimsad, pikaealised ja lahked abilised igale aulisele soovijale.",
+   "fade": "Samas on puude raviomadustest kirjutatud teenimatult vähe, võrreldes madalate heintaimedega, mida on looduses sageli ka keerulisem märgata või ära tunda. Puid ja põõsaid on aga lihtne leida ning nende vägi on monumentaalne. Lisaks metsa hii"
+  },
+  {
+   "id": "kahedoosi-susteem-paeva-ja-oo-rutm",
+   "kind": "front",
+   "label": "KAHEDOOSI SÜSTEEM: PÄEVA JA ÖÖ RÜTM",
+   "title": "KAHEDOOSI SÜSTEEM: PÄEVA JA ÖÖ RÜTM",
+   "page": 7,
+   "words": 92,
+   "teaser": "Raamatu üks praktilisi nurgakive on kahedoosi süsteem. See ei ole juhuslik, vaid peegeldab inimkeha ja looduse loomulikku rütmi.",
+   "fade": ""
+  },
+  {
+   "id": "tehnika-ja-tehnoloogia-kuidas-valmistada-vaega-tinktuure",
+   "kind": "front",
+   "label": "TEHNIKA JA TEHNOLOOGIA: KUIDAS VALMISTADA VÄEGA TINKTUURE",
+   "title": "TEHNIKA JA TEHNOLOOGIA: KUIDAS VALMISTADA VÄEGA TINKTUURE",
+   "page": 8,
+   "words": 558,
+   "teaser": "Tinktuure on inimesed alati valmistanud. Selleks on nad korjanud neid huvitavaid taimi ja valanud need üle kange alkoholiga ning jätnud need mõneks ajaks seisma, neid aegajalt loksutades.",
+   "fade": "See on olnud kindel ja läbiproovitud viis ravimtinktuuride valmistamiseks."
+  },
+  {
+   "id": "poordumine-lugeja-poole",
+   "kind": "front",
+   "label": "PÖÖRDUMINE LUGEJA POOLE",
+   "title": "PÖÖRDUMINE LUGEJA POOLE",
+   "page": 11,
+   "words": 274,
+   "teaser": "Hea lugeja, siit teekonda alustades palun ma Sind: ole kannatlik. Ravimtaimede abi on tihti süsteemsem ja sügavam kui see, mida pakub kiirelt toimiv tablett, kuid looduse vägi nõuab aega ja kohalolu.",
+   "fade": "Taimed ei vaigista lihtsalt sümptomit, vaid püüavad taastada organismi terviklikku tasakaalu."
+  },
+  {
+   "id": "peatukk-1",
+   "kind": "chapter",
+   "label": "PEATÜKK 1",
+   "title": "Siberi lehis (Larix sibirica) – kapillaaride valvur ja pikaealisuse puu",
+   "page": 17,
+   "words": 461,
+   "teaser": "Siberi lehis on okaspuu, mille puit on tuntud oma erakordse mädanemiskindluse poolest – Veneetsia püsib tänaseni suures osas lehisest vaiadel. See sama vastupidavus kandub üle ka tema biokeemilisse mõjusse inimorganismis, kus lehis toimib ühe võimsama teadaoleva antioksüdandina.",
+   "fade": ""
+  },
+  {
+   "id": "peatukk-2",
+   "kind": "chapter",
+   "label": "PEATÜKK 2",
+   "title": "Lepp (Alnus incana) – kootav kaitse ja sisemine rahu",
+   "page": 21,
+   "words": 427,
+   "teaser": "Lepp (nii hall lepp Alnus incana kui ka sanglepp Alnus glutinosa) on meie metsade üks sagedasemaid ja praktilisemaid puid. Kui lehis tegeleb veresoonte elastsuse ja läbilaskvusega, siis lepp on oma olemuselt \"sulgeja\" ja \"kinnitaja\".",
+   "fade": "Tänu oma erakordselt kõrgele tanniinide (parkainete) sisaldusele on lepp asendamatu olukordades, kus organism vajab kiiret abi põletike või limaskestade kahjustuste korral."
+  },
+  {
+   "id": "peatukk-3",
+   "kind": "chapter",
+   "label": "PEATÜKK 3",
+   "title": "Pihlakas (Sorbus aucuparia) – vitamiinikindlus ja ainevahetuse mootor",
+   "page": 25,
+   "words": 416,
+   "teaser": "Pihlakas on Eesti taluõuede klassikaline kaitsepuu, kuid tema tegelik väärtus on laiem ja peitub tema marjade ning koore võimes hoida organismi sisekeskkond puhtana ja toimivana. Pihlakas ei ole lihtsalt \"marjapuu\", vaid tugev looduslik antibiootikum ja ainevahetuse stimulaator.",
+   "fade": ""
+  },
+  {
+   "id": "peatukk-4",
+   "kind": "chapter",
+   "label": "PEATÜKK 4",
+   "title": "Kask (Betula pendula) – puhastaja, tarbepuit ja valguse tooja",
+   "page": 29,
+   "words": 479,
+   "teaser": "Kask (nii arukask Betula pendula kui ka sookask Betula pubescens) on puu, millest on kasutatav peaaegu kõik: puit, mahl, pungad, lehed, koor (toht) ja ka kasel kasvav must pässik. Kask on metsa \"valgus\", mis sümboliseerib puhtust ja uuenemist.",
+   "fade": ""
+  },
+  {
+   "id": "peatukk-5",
+   "kind": "chapter",
+   "label": "PEATÜKK 5",
+   "title": "Toomingas (Prunus padus) – metsa kange antiseptik",
+   "page": 33,
+   "words": 424,
+   "teaser": "Toomingas on metsa üks võimsamaid looduslikke antibiootikume. Tema vägi on ründav ja kiire, suunatud eelkõige patogeensete mikroorganismide hävitamisele ja limaskestade kaitsele.",
+   "fade": "Toomingat ei iseloomusta mitte ainult tema uimastav lõhn, vaid fütontsiidide kontsentratsioon, mis on nii kange, et suudab puhastada õhku ja vett ka distantsilt."
+  },
+  {
+   "id": "peatukk-6",
+   "kind": "chapter",
+   "label": "PEATÜKK 6",
+   "title": "Kadakas (Juniperus communis) – metsa ründav puhastaja ja liigeste tohter",
+   "page": 37,
+   "words": 500,
+   "teaser": "Kadakas on üks Eesti looduse tugevamaid ja pikaealisemaid taimi. Kui kask on leebe puhastaja, siis kadakas on ründav ja halastamatu – tema eeterlikud õlid ja terpeenid suudavad tungida sügavale kudedesse, sundides organismi vabanema seisvatest vedelikest ja jääkainetest.",
+   "fade": ""
+  },
+  {
+   "id": "peatukk-7",
+   "kind": "chapter",
+   "label": "PEATÜKK 7",
+   "title": "Tamm (Quercus robur) – kestvuse, jõu ja puhta vere puu",
+   "page": 41,
+   "words": 429,
+   "teaser": "Tamm on Euroopa metsade kuningas, sümboliseerides vankumatust, pikaealisust ja meelekindlust. Kui lehis on kapillaaride valvur, siis tamm on organismi \"kindlustaja\".",
+   "fade": "Tema vägi ei peitu kiiruses, vaid sügavuses – ta tungib kudedesse, tõmbab need kokku ja muudab vastupidavaks rünnakutele. Tamm on universaalne elujõu sümbol, mis pakub tuge ja selgroogu igale inimesele."
+  },
+  {
+   "id": "peatukk-8",
+   "kind": "chapter",
+   "label": "PEATÜKK 8",
+   "title": "Pärn (Tilia cordata) – pehmuse, leevenduse ja valguse puu",
+   "page": 45,
+   "words": 438,
+   "teaser": "Pärn on meie maastike ja parkide hing. See on üks armastatumaid puid, mille lõhn täidab suveõhtud magusa aroomiga, andes märku looduse tipphetkest.",
+   "fade": "Kui teised puud võivad mõjuda distantselt, siis pärn on lähedane ja kodune – ta on \"hea puu\", kes pakub varju, rahu ja tervendust nii südalinna pargis kui ka põlise taluõue nurgas."
+  },
+  {
+   "id": "peatukk-9",
+   "kind": "chapter",
+   "label": "PEATÜKK 9",
+   "title": "Mänd (Pinus sylvestris) – valguse, vaigu ja puhta hingamise puu",
+   "page": 49,
+   "words": 453,
+   "teaser": "Mänd on Eesti looduse ja majanduse tõeline nurgakivi. Ta on meie kõige levinum puuliik, moodustades valdava osa Eesti metsavarudest.",
+   "fade": "Ta kasvab kõikjal, nii hiiglaslike männikutena meie maad kattes, kui ka kiduratel mereäärsetel liivaluidetel või hoopis rabades, kus ta võib olla sajandeid vana. Mänd on puu, mis on ehitanud meie kodud ja hoidnud meie tervist sajandeid."
+  },
+  {
+   "id": "peatukk-10",
+   "kind": "chapter",
+   "label": "PEATÜKK 10",
+   "title": "Nulg (Abies sibirica) – peenekoeline liigeste tohter",
+   "page": 53,
+   "words": 465,
+   "teaser": "Nulg on Eesti looduses pigem sissetoodud külaline, kuid tema roll pargiarhitektuuris ja rahvameditsiinis on märkimisväärne. Nulg on oma olemuselt aristokraatlik – tema okkad on pehmed, lõhn on rafineeritum kui kuusel ja tema kasvuvorm on piinlikult korrektne.",
+   "fade": "Meditsiiniliselt on ta aga üks tugevamaid \"süvatoimelisi\" okaspuutaimi."
+  },
+  {
+   "id": "peatukk-11",
+   "kind": "chapter",
+   "label": "PEATÜKK 11",
+   "title": "Hobukastan (Aesculus hippocastanum) – vereringe valvur ja liigeste kergendaja",
+   "page": 57,
+   "words": 391,
+   "teaser": "Hobukastan ei ole meie metsade põliselanik, vaid on tulnud siia lõuna poolt, tuues endaga kaasa päikeselise väe ja jõulise tervendusvõime. Kuigi tema viljad ei kõlba süüa (erinevalt harilikust kastanist), on tema biokeemiline profiil üks tugevamaid veresoonte ja liigeste ravimisel.",
+   "fade": "Kastan on puu, mis \"paneb asjad liikuma\"."
+  },
+  {
+   "id": "peatukk-12",
+   "kind": "chapter",
+   "label": "PEATÜKK 12",
+   "title": "Paju (Salix) – valuvaigistaja ja paindlikkuse andja",
+   "page": 61,
+   "words": 364,
+   "teaser": "Paju on niiskete paikade ja veepiiride asukas, kelle elujõud on imekspandav. Iga mulda pistetud pajuvits võtab juured alla, sümboliseerides peatamatut uuenemist.",
+   "fade": "Rahvameditsiinis on paju tuntud kui \"looduslik põletikualandaja\" – puu, mis võtab tulituse liigestest ja toob kergust liikumisse."
+  },
+  {
+   "id": "peatukk-13",
+   "kind": "chapter",
+   "label": "PEATÜKK 13",
+   "title": "Loorber (Laurus nobilis) – puhastaja ja soolade lahustaja",
+   "page": 65,
+   "words": 810,
+   "teaser": "Loorber on iidne võidupuu, mis on pärit Vahemere maadest, kuid leidnud kindla koha põhjamaistes ravimikappides. Kui köögis on ta asendamatu maitseaine, siis fütoteraapias on loorber üks radikaalsemaid vahendeid organismi puhastamiseks kusihape- ja soolajääkidest.",
+   "fade": "See on tugevatoimeline taim, mis nõuab täpsust ja tehnoloogilist korrektsust."
+  },
+  {
+   "id": "peatukk-15",
+   "kind": "chapter",
+   "label": "PEATÜKK 15",
+   "title": "Haab (Populus tremula) – hirmude peletaja ja sisemine puhastaja",
+   "page": 73,
+   "words": 449,
+   "teaser": "Haab on puu, mis ei püsi kunagi paigal. Tema värisevad lehed on andnud põhjust paljudeks legendideks, kuid rahvameditsiinis on haab tuntud kui üks kõige kibedamaid ja tõhusamaid ravipuid.",
+   "fade": "Haab on \"meeste puu\", mis tegeleb nii füüsilise eesnäärme tervise kui ka vaimse kindluse ja hirmudest vabanemisega."
+  },
+  {
+   "id": "peatukk-16",
+   "kind": "chapter",
+   "label": "PEATÜKK 16",
+   "title": "Sarapuu (Corylus avellana) – veresoonte tugevdaja ja elujõu andja",
+   "page": 77,
+   "words": 516,
+   "teaser": "Sarapuu on meie alusmetsa üks väärtuslikumaid asukaid. Kui enamasti tuntakse sarapuud tema maitsvate pähklite järgi, siis taimeravis on sarapuukoor ja -lehed hinnatud eeskätt nende erakordse mõju tõttu veresoonkonnale.",
+   "fade": "Kui haab on meie süsteemis puhastaja ja \"väljaimeja\", siis sarapuu on ülesehitaja, pakkudes tuge organismi transpordisüsteemile – veresoonkonnale. See taim toob elastsust ja vastupidavust nii füüsilisel kui vaimsel tasandil."
+  },
+  {
+   "id": "peatukk-17",
+   "kind": "chapter",
+   "label": "PEATÜKK 17",
+   "title": "Mustikas (Vaccinium myrtillus) – ainevahetuse tasakaalustaja ja selge pilgu andja",
+   "page": 81,
+   "words": 494,
+   "teaser": "Mustikas on madal heitlehine kääbuspõõsas, mis on meie põhjamaiste metsade üks olulisemaid alustaimestiku liike. Kui marjad on laialt tuntud toiduna, siis fütoteraapias on mustikas eelkõige võimas süsteemne tasakaalustaja, mille vägi peitub võrdselt nii lehtedes kui ka viljades.",
+   "fade": "Mustikas on \"rahu ja korra\" taim, mis stabiliseerib organismi sisemised protsessid."
+  },
+  {
+   "id": "peatukk-18",
+   "kind": "chapter",
+   "label": "PEATÜKK 18",
+   "title": "Pohl (Vaccinium vitis-idaea) – neerude puhastaja ja elujõu hoidja",
+   "page": 85,
+   "words": 556,
+   "teaser": "Pohl on igihaljas kääbuspõõsas, mis sümboliseerib metsa vastupidavust ja puhastavat väge. Tema kirkad punased marjad, mis sügiseses metsas vastu säravad, on märk kangesse kesta pakitud elujõust.",
+   "fade": "Kui mustikas keskendus ainevahetusele ja vereringele, siis pohl on asendamatu spetsialist siseelundite, eriti neerude ja kuseteede puhastamisel ning põletike leevendamisel. Pohl on \"metsa tervisepolitsei\", mis hoiab organismi sisesüsteemid "
+  },
+  {
+   "id": "peatukk-19",
+   "kind": "chapter",
+   "label": "PEATÜKK 19",
+   "title": "Angervaks (Filipendula ulmaria) – looduslik aspiriin ja rahu tooja",
+   "page": 89,
+   "words": 490,
+   "teaser": "Angervaks on üks meie looduse suviseid kroonijuveele, mille mesimagus lõhn täidab niidud ja kraavikaldad kesksuvel. Taimehuvilisele on see aga üks võimsamaid ravimtaimi, olles tuntud eelkõige kui \"looduslik valuvaigisti\".",
+   "fade": "Angervaks pakub leevendust seal, kus on vaja vaigistada valu või alandada põletikku, tehes seda kehale omasel ja pehmel viisil."
+  },
+  {
+   "id": "peatukk-20",
+   "kind": "chapter",
+   "label": "PEATÜKK 20",
+   "title": "Kalmus (Acorus calamus) – seedimise ja vaimse selguse arhitekt",
+   "page": 93,
+   "words": 507,
+   "teaser": "Kalmus on üks omapärasemaid veeäärseid taimi, mille tugev, vürtsikas ja kergelt sidrunit meenutav lõhn teeb tema leidmise lihtsaks. Kui pohl ja mustikas on metsaaluse asukad, siis kalmus on \"veepiiri valvur\".",
+   "fade": "Rahvameditsiinis on kalmusel asendamatu koht eeskätt seedetrakti ja närvisüsteemi toniseerijana – ta on taim, mis paneb organismi sisemised mahlad liikuma ja toob mõtetesse teravust."
+  },
+  {
+   "id": "peatukk-21",
+   "kind": "chapter",
+   "label": "PEATÜKK 21",
+   "title": "Must sõstar – aiaapteegi süda ja liigeste kergendus",
+   "page": 97,
+   "words": 411,
+   "teaser": "Must sõstar (Ribes nigrum) on Eesti taluaedade raudvara. Kui marjad on hinnatud vitamiinirohkuse poolest, siis fütoteraapias on musta sõstra lehed ja pungad need, mis peidavad endas tõelist terapeutilist jõudu.",
+   "fade": "See on taim, mis suudab organismist välja uhta liigsed soolad ja kusihappe, pakkudes leevendust seestpoolt väljapoole."
+  },
+  {
+   "id": "peatukk-22",
+   "kind": "chapter",
+   "label": "PEATÜKK 22",
+   "title": "Leesikas (Arctostaphylos uva-ursi) – sisevete puhastaja ja kindel valvur",
+   "page": 101,
+   "words": 383,
+   "teaser": "Leesikas on pohlaga sarnane, kuid oma toime poolest veelgi kontsentreeritum ja spetsiifilisem taim. See on organismi \"raskekahurvägi\", mis nõuab teadlikku ümberkäimist, kuid pakub võimsat abi seal, kus teised taimed hätta jäävad.",
+   "fade": "Erinevalt pohlalehest on leesikas nii tugev, et teda tuleb käsitleda pigem ravimi kui igapäevase teetaimena."
+  },
+  {
+   "id": "peatukk-23",
+   "kind": "chapter",
+   "label": "PEATÜKK 23",
+   "title": "Kortsleht (Alchemilla) – kastepiisa hoidja ja haavade parandaja",
+   "page": 105,
+   "words": 390,
+   "teaser": "Kuigi kortsleht on meie aedades ja heinamaadel sagedasti esinev taim, ei jää ta silma esimesel vaatamisel, aga kui keegi vaevub ta üles otsima, siis leiab ta väärtusliku ravimtaime. Tema ladinakeelne nimi Alchemilla viitab alkeemikutele, kes kogusid kortslehe lehtedele koonduvat \"taevast kastevett\" (guttatio), pidades ",
+   "fade": "See on taim, mis esindab pehmet jõudu ja taastumisvõimet, olles universaalne limaskestade \"plaaster\"."
+  },
+  {
+   "id": "peatukk-24",
+   "kind": "chapter",
+   "label": "PEATÜKK 24",
+   "title": "Jalakas (Ulmus glabra) – sisemine palsam ja limaskestade hoidja",
+   "page": 109,
+   "words": 414,
+   "teaser": "Jalakas on puu, mille vägi ei peitu mitte jõuga sulgemises, vaid kaitsmises ja pehmendamises – see on looduse poolt loodud \"vedel plaaster\", mis on asendamatu igasuguse siseelundkonna ärrituse korral. Kui paljud teised puud pakuvad meile oma vilju või õisi, siis jalakas kingib meile oma sisekoore sitke ja emaliku kaits",
+   "fade": ""
+  },
+  {
+   "id": "peatukk-25",
+   "kind": "chapter",
+   "label": "PEATÜKK 25",
+   "title": "Pappel (Populus) – vaigune kindlus ja põletiku taltsutaja",
+   "page": 113,
+   "words": 347,
+   "teaser": "Pappel on puudekeskse raamatu üks olulisemaid lülisid. Kui me räägime puude väest, siis pappel esindab selle kõige kontsentreeritumat ja vaigusemat vormi.",
+   "fade": "Tema pungad on kui väikesed looduslikud tõrvapommid, mis on täis kleepuvat palsamit, millega puu kaitseb oma uut elu kevadiste rünnakute eest."
+  },
+  {
+   "id": "peatukk-26",
+   "kind": "chapter",
+   "label": "PEATÜKK 26",
+   "title": "Saar (Fraxinus excelsior) – maailmapuu ja liigeste vabastaja",
+   "page": 117,
+   "words": 335,
+   "teaser": "Saar on puu, mis ühendab taeva ja maa. Skandinaavia mütoloogias oli just saar see püha puu, mis hoidis maailma koos.",
+   "fade": "Meditsiiniliselt on saar aga \"puhastaja\", mis aitab kehal vabaneda sellest, mis on muutunud liigseks ja koormavaks, olles üks olulisemaid lülisid liigeste tervise toetamisel."
+  },
+  {
+   "id": "peatukk-27",
+   "kind": "chapter",
+   "label": "PEATÜKK 27",
+   "title": "Must pässik (Inonotus obliquus) – kase elujõu kontsentraat ja immuunsüsteemi ülemvalvur",
+   "page": 121,
+   "words": 525,
+   "teaser": "Must pässik, mida rahvasuus tuntakse tšagana, ei ole lihtsalt üks seen teiste seas. See on metsa biokeemiline meistriteos.",
+   "fade": "Pässik on kase elujõu kontsentraat, mis ammutab puu seest selle kõige väärtuslikumad kaitsvad ühendid ja väärindab need vormi, mida inimorganism suudab maksimaalselt omastada. See must, söestunud välimusega mügarik on looduse vastus tänapäe"
+  },
+  {
+   "id": "peatukk-28",
+   "kind": "chapter",
+   "label": "PEATÜKK 28",
+   "title": "Taruvaik (Propolis) – mesilaste karkass ja looduslik antibiootikum",
+   "page": 125,
+   "words": 366,
+   "teaser": "Taruvaik ei ole taim, kuid ta on taimse päritoluga. See on mesilaste poolt puude (peamiselt kase, papli ja okaspuude) pungade pealt kogutud vaiguliste ainete segu, mida nad on rikastanud oma ensüümidega.",
+   "fade": "Kui puu kaitseb oma punga betuliini ja vaikudega, siis mesilane kogub selle väe kokku, et kaitsta tervet taru."
+  },
+  {
+   "id": "peatukk-29",
+   "kind": "chapter",
+   "label": "PEATÜKK 29",
+   "title": "Kopranõre (Castoreum) – looma vägi ja looduse apteek",
+   "page": 129,
+   "words": 362,
+   "teaser": "Kopranõre ei ole taim, kuid see on puude väe loomne ümbertöötlus. Kobras, kes toitub haavakoorest, lepast ja pajust, koondab nende puude ravitoime (sh salitsiini) oma nõrenäärmetesse.",
+   "fade": "See on metsa kõige kangem \"reservelement\", mida on läbi aegade kasutatud siis, kui muu enam ei aidanud."
+  }
+ ]
+}
