@@ -323,8 +323,43 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
               </p>
             );
           })}
+
+          {section.partial && (
+            <div className="relative mt-2 overflow-hidden rounded-sm border border-border/70 bg-card/50 p-6 sm:p-8">
+              <div aria-hidden="true" className="space-y-3 select-none">
+                {[94, 82, 97, 70, 88].map((w, i) => (
+                  <div
+                    key={i}
+                    className="h-3.5 rounded-full bg-foreground/10 blur-[3px]"
+                    style={{ width: `${w}%` }}
+                  />
+                ))}
+              </div>
+              <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-5">
+                <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
+                  {t("reader.lockedNote")}
+                </p>
+                <a
+                  href="/#ligipaas"
+                  className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+                >
+                  {t("reader.unlock")}
+                </a>
+              </div>
+              <img
+                src={engravingJuniper}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                width={1024}
+                height={1024}
+                className="pointer-events-none absolute -right-16 -bottom-20 w-56 opacity-[0.05]"
+              />
+            </div>
+          )}
         </div>
       )}
+
     </article>
   );
 }
