@@ -11,6 +11,7 @@ Change: the server keeps its random pick, but returns sections in reading-priori
 3. all locked chapters, in original book order
 
 Details:
+
 - Reordering happens once on the server, so the contents rail, the scroll order and the active-section highlight all stay consistent with what is shown.
 - Each open chapter keeps its real chapter label and page number, so the reader still knows where in the book it is ("Peatükk 28 · lk 112").
 - A small divider line after the open block marks where the locked remainder begins, with the existing "Lukus" wording — no new copy needed beyond one label in the ET/EN dictionary.
@@ -29,4 +30,7 @@ They are saved as assets only; no route, section or import references them, so t
 ## Technical notes
 
 - Only two files change for (a): `src/lib/book.functions.ts` (ordering) and one dictionary entry in `src/lib/i18n.tsx`. The reader component needs no logic change since it renders the server order.
-- Locked text stays truncated server-side; reordering does not weaken that.
+- Locked text stays truncated server-side; reordering does not weaken that.  
+
+- One leak to fix when we build: `src/content/book-et.json` (~178 KB, full Estonian text) is in the **public** GitHub repo, so a clone bypasses the blur. The EPUB must stay out of `public/` and that JSON should leave public git
+  explore feasibility of the gated foliate-js added reader plus real paywall/OTP on this stack

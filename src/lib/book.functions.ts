@@ -51,7 +51,16 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
     if (picked) openIds.add(picked.id);
   }
 
-  const sections: PublicSection[] = readable.map((s) => {
+  // Reading-priority order: intro first, then the opened chapters, then the locked rest.
+  const ordered = [...readable].sort((a, b) => {
+    const rank = (s: (typeof readable)[number]) =>
+      s.id.startsWith("sissejuhatus") ? 0 : openIds.has(s.id) ? 1 : 2;
+    const diff = rank(a) - rank(b);
+    if (diff !== 0) return diff;
+    return readable.indexOf(a) - readable.indexOf(b);
+  });
+
+  const sections: PublicSection[] = ordered.map((s) => {
     const locked = !openIds.has(s.id);
     if (!locked) {
       return { ...s, locked: false, hiddenBlocks: 0 };
