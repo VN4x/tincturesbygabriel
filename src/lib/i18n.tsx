@@ -142,7 +142,7 @@ export const dict: Dict = {
 
   "cta.title": { et: "Astu metsa sisse", en: "Step into the forest" },
   "cta.p": {
-    et: "Ava tasuta lõik ja vaata, kas see keel kõnetab sind. Ülejäänu ootab lukus.",
+    et: "Ava tasuta lõik ja vaata, kas see keel kõnetab sind.",
     en: "Open a free passage and see whether this language speaks to you. The rest waits, locked.",
   },
 
@@ -150,7 +150,7 @@ export const dict: Dict = {
     et: "Kõik õigused kaitstud. Reprodutseerimine ilma autori kirjaliku loata on keelatud.",
     en: "All rights reserved. Reproduction without the author's written permission is prohibited.",
   },
-  "footer.set": { et: "Tekst ja koostamine: Gabriel Corpus · Trükitud Eestis", en: "Text and compilation: Gabriel Corpus · Printed in Estonia" },
+  "footer.set": { et: "Tekst ja koostamine: Gabriel Corpus, raamatu koostamisel ja kujundamisel on kasutatud Ai tööriistu", en: "Text and compilation: Gabriel Corpus · Printed in Estonia" },
 
   "reader.back": { et: "Tagasi avalehele", en: "Back to the landing page" },
   "reader.title": { et: "Lugemisvaade", en: "Reader" },
