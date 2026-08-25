@@ -4,6 +4,7 @@ import { getFullBook, getSample, type PublicSection, type Sample } from "@/lib/b
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { SiteHeader } from "@/components/SiteHeader";
+import { AskDoctorDialog } from "@/components/AskDoctorDialog";
 import { useLang } from "@/lib/i18n";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 
@@ -39,6 +40,7 @@ function ReaderPage() {
   const [size, setSize] = useState(1);
   const [active, setActive] = useState<string>(sample.sections[0]?.id ?? "");
   const [busy, setBusy] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   const { hasBook, user } = useSession();
 
   // Entitled readers (admin, friend account, paid) get the whole book from the server.
@@ -175,7 +177,7 @@ function ReaderPage() {
 
           <div className="space-y-16">
             {sample.sections.map((s) => (
-              <SectionView key={s.id} section={s} sizeClass={SIZES[size] ?? SIZES[1]} />
+              <SectionView key={s.id} section={s} sizeClass={SIZES[size] ?? SIZES[1]} onAsk={() => setAskOpen(true)} />
             ))}
           </div>
         </main>
@@ -192,6 +194,13 @@ function ReaderPage() {
             >
               {t("reader.back")}
             </Link>
+            <button
+              type="button"
+              onClick={() => setAskOpen(true)}
+              className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:text-foreground"
+            >
+              {t("reader.dm")}
+            </button>
             <a
               href="/#ligipaas"
               className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
@@ -201,6 +210,8 @@ function ReaderPage() {
           </div>
         </div>
       </div>
+
+      {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
 }
@@ -210,7 +221,7 @@ function shortTitle(title: string) {
   return cut.length > 34 ? `${cut.slice(0, 33)}…` : cut;
 }
 
-function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass: string }) {
+function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; sizeClass: string; onAsk: () => void }) {
   const { t } = useLang();
   const teaser = section.blocks[0];
   const teaserText = teaser && teaser.t === "p" ? teaser.text : "";
@@ -260,12 +271,21 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
             <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
               {t("reader.lockedNote")}
             </p>
-            <a
-              href="/#ligipaas"
-              className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              {t("reader.unlock")}
-            </a>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={onAsk}
+                className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
+              >
+                {t("reader.dm")}
+              </button>
+              <a
+                href="/#ligipaas"
+                className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                {t("reader.unlock")}
+              </a>
+            </div>
           </div>
 
           <img
@@ -339,12 +359,21 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
                 <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
                   {t("reader.lockedNote")}
                 </p>
-                <a
-                  href="/#ligipaas"
-                  className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
-                >
-                  {t("reader.unlock")}
-                </a>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={onAsk}
+                    className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
+                  >
+                    {t("reader.dm")}
+                  </button>
+                  <a
+                    href="/#ligipaas"
+                    className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+                  >
+                    {t("reader.unlock")}
+                  </a>
+                </div>
               </div>
               <img
                 src={engravingJuniper}
