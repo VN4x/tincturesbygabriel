@@ -181,6 +181,14 @@ export const dict: Dict = {
   },
   "reader.loading": { et: "Metsa avamine…", en: "Opening the forest…" },
   "reader.dm": { et: "Küsi doktorilt — DM", en: "Ask the doctor — DM" },
+  "reader.fullBar": {
+    et: "Täisligipääs on avatud — kogu raamat on sinu jaoks lahti.",
+    en: "Full access is active — the whole book is open for you.",
+  },
+  "reader.fullOpenCount": {
+    et: "peatükki avatud täisligipääsuga",
+    en: "chapters open with full access",
+  },
 };
 
 type Ctx = {
