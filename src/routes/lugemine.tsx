@@ -177,7 +177,7 @@ function ReaderPage() {
 
           <div className="space-y-16">
             {sample.sections.map((s) => (
-              <SectionView key={s.id} section={s} sizeClass={SIZES[size] ?? SIZES[1]} />
+              <SectionView key={s.id} section={s} sizeClass={SIZES[size] ?? SIZES[1]} onAsk={() => setAskOpen(true)} />
             ))}
           </div>
         </main>
