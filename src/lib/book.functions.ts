@@ -16,9 +16,12 @@ export type PublicSection = {
   page: number;
   words: number;
   locked: boolean;
+  /** A half-open chapter: real text up to the cut, then locked. */
+  partial?: boolean;
   /** For locked sections this holds only a short teaser, never the full text. */
   blocks: PublicBlock[];
   hiddenBlocks: number;
+
 };
 
 export type Sample = {
@@ -42,30 +45,51 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
   const chapters = readable.filter((s) => s.kind === "chapter");
   const openIds = new Set<string>();
 
-  // The introduction is always open, plus three random chapters per visit.
+  // The introduction is always open, plus one full chapter and one half-open chapter.
   const intro = readable.find((s) => s.id.startsWith("sissejuhatus"));
   if (intro) openIds.add(intro.id);
 
   const pool = [...chapters];
-  for (let i = 0; i < 3 && pool.length > 0; i += 1) {
+  const pick = () => {
+    if (pool.length === 0) return undefined;
     const idx = Math.floor(Math.random() * pool.length);
-    const picked = pool.splice(idx, 1)[0];
-    if (picked) openIds.add(picked.id);
-  }
+    return pool.splice(idx, 1)[0];
+  };
 
-  // Reading-priority order: intro first, then the opened chapters, then the locked rest.
+  const fullChapter = pick();
+  if (fullChapter) openIds.add(fullChapter.id);
+  const halfChapter = pick();
+  const halfId = halfChapter?.id;
+
+  // Reading-priority order: intro, the full chapter, the half-open one, then the locked rest.
   const ordered = [...readable].sort((a, b) => {
     const rank = (s: (typeof readable)[number]) =>
-      s.id.startsWith("sissejuhatus") ? 0 : openIds.has(s.id) ? 1 : 2;
+      s.id.startsWith("sissejuhatus") ? 0 : openIds.has(s.id) ? 1 : s.id === halfId ? 2 : 3;
     const diff = rank(a) - rank(b);
     if (diff !== 0) return diff;
     return readable.indexOf(a) - readable.indexOf(b);
   });
 
   const sections: PublicSection[] = ordered.map((s) => {
-    const locked = !openIds.has(s.id);
-    if (!locked) {
+    if (openIds.has(s.id)) {
       return { ...s, locked: false, hiddenBlocks: 0 };
+    }
+
+    // Half-open chapter: about half of the real blocks, the rest never leaves the server.
+    if (s.id === halfId) {
+      const keep = Math.max(1, Math.round(s.blocks.length / 2));
+      return {
+        id: s.id,
+        kind: s.kind,
+        label: s.label,
+        title: s.title,
+        page: s.page,
+        words: s.words,
+        locked: true,
+        partial: true,
+        blocks: s.blocks.slice(0, keep),
+        hiddenBlocks: Math.max(0, s.blocks.length - keep),
+      };
     }
 
     const firstPara = s.blocks.find((b) => b.t === "p" && b.text.length > 80);
@@ -86,6 +110,7 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
       hiddenBlocks: Math.max(0, s.blocks.length - 1),
     };
   });
+
 
   return {
     title: book.title,
