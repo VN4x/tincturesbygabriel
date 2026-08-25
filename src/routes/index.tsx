@@ -541,6 +541,12 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
             />
           </label>
 
+          {error && (
+            <p className="font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-destructive">
+              {error}
+            </p>
+          )}
+
           {sent && (
             <label className="block">
               <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
