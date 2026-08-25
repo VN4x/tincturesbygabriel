@@ -31,7 +31,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     const [rolesRes, paidRes] = await Promise.all([
       supabase.from("user_roles").select("role").eq("user_id", userId),
-      supabase.from("purchases").select("id").eq("user_id", userId).eq("status", "paid").limit(1),
+      // RLS narrows this to the reader's own purchases (by account or by verified e-mail).
+      supabase.from("purchases").select("id").eq("status", "paid").limit(1),
     ]);
     setRoles((rolesRes.data ?? []).map((r) => r.role as string));
     setPaid((paidRes.data ?? []).length > 0);

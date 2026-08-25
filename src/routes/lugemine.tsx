@@ -132,7 +132,7 @@ function ReaderPage() {
                 {sample.title}
               </h1>
               <p className="mt-1 font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
-                {sample.openCount} {t("reader.openCount")} · {sample.author}
+                {sample.openCount} {t(hasBook ? "reader.fullOpenCount" : "reader.openCount")} · {sample.author}
               </p>
             </div>
 
@@ -158,6 +158,7 @@ function ReaderPage() {
                 </div>
               </div>
 
+              {!hasBook && (
               <button
                 type="button"
                 onClick={reshuffle}
@@ -166,6 +167,7 @@ function ReaderPage() {
               >
                 {busy ? t("reader.loading") : t("reader.reshuffle")}
               </button>
+              )}
             </div>
           </div>
 
@@ -186,7 +188,9 @@ function ReaderPage() {
       {/* Paywall bar */}
       <div className="fixed bottom-0 z-40 w-full border-t border-border bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3.5 sm:px-8">
-          <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">{t("reader.bar")}</p>
+          <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
+            {t(hasBook ? "reader.fullBar" : "reader.bar")}
+          </p>
           <div className="flex items-center gap-3">
             <Link
               to="/"
@@ -201,12 +205,14 @@ function ReaderPage() {
             >
               {t("reader.dm")}
             </button>
-            <a
-              href="/#ligipaas"
-              className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
-            >
-              {t("reader.unlock")}
-            </a>
+            {!hasBook && (
+              <a
+                href="/#ligipaas"
+                className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+              >
+                {t("reader.unlock")}
+              </a>
+            )}
           </div>
         </div>
       </div>
