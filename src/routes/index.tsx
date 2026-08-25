@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import teasers from "@/content/teasers.json";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLang } from "@/lib/i18n";
+import { AskDoctorDialog } from "@/components/AskDoctorDialog";
 import heroForest from "@/assets/hero-forest.jpg";
 import tinctures from "@/assets/tinctures.jpg";
 import engravingBirch from "@/assets/engraving-birch.png";
@@ -10,6 +11,7 @@ import engravingJuniper from "@/assets/engraving-juniper.png";
 import authorPortrait from "@/assets/gabriel-corpus.jpg";
 import doctorAvatar from "@/assets/mock/gabriel-45.jpg";
 import { supabase } from "@/integrations/supabase/client";
+
 
 type Teaser = {
   id: string;
