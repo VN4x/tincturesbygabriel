@@ -66,6 +66,7 @@ function Landing() {
   const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
   const words = useMemo(() => sections.reduce((sum, s) => sum + s.words, 0), []);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
