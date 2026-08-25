@@ -402,7 +402,22 @@ function Landing() {
                 </summary>
                 <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
                   {t(`faq.${n}.a`)}
+                  {n === 3 && (
+                    <>
+                      {" "}
+                      <a
+                        href="https://a.co/d/02Sl0Z5a"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
+                      >
+                        {t("faq.3.link")}
+                      </a>
+                      .
+                    </>
+                  )}
                 </p>
+
               </details>
             ))}
           </div>
