@@ -8,6 +8,7 @@ import tinctures from "@/assets/tinctures.jpg";
 import engravingBirch from "@/assets/engraving-birch.png";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 import authorPortrait from "@/assets/gabriel-corpus.jpg";
+import doctorAvatar from "@/assets/mock/gabriel-45.jpg";
 
 type Teaser = {
   id: string;
@@ -61,10 +62,11 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
   const words = useMemo(() => sections.reduce((sum, s) => sum + s.words, 0), []);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -329,6 +331,26 @@ function Landing() {
         />
         <div className="relative mx-auto grid max-w-5xl items-center gap-12 px-5 sm:px-8 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">
           <figure className="mx-auto w-full max-w-[22rem]">
+            <button
+              type="button"
+              onClick={() => setAskOpen(true)}
+              className="group mb-5 ml-auto flex items-center gap-3 text-right"
+            >
+              <span className="font-[family-name:var(--font-ui)] text-[10px] leading-relaxed tracking-[0.22em] text-muted-foreground uppercase transition-colors group-hover:text-primary">
+                {lang === "et" ? "Küsi doktorilt" : "Ask the doctor"}
+                <span className="mx-2 text-primary">—</span>
+                DM
+              </span>
+              <img
+                src={doctorAvatar}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                width={256}
+                height={256}
+                className="h-14 w-14 shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
+              />
+            </button>
             <div className="relative overflow-hidden rounded-sm border border-primary/25 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
               <img
                 src={authorPortrait}
@@ -420,6 +442,7 @@ function Landing() {
       </footer>
 
       {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
+      {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
 }
@@ -445,11 +468,15 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
+/** Mock list of existing accounts — a code is never sent to an unknown address. */
+const KNOWN_ACCOUNTS = ["gabriel@corpus.ee", "sober@naide.ee"];
+
 /** Designed entry point for the one-time-code sign-in. Not wired to a backend yet. */
 function LoginDialog({ onClose }: { onClose: () => void }) {
   const { lang } = useLang();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const copy =
     lang === "et"
@@ -462,6 +489,7 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
           verify: "Kinnita",
           friend: "Sõbrakonto kutse saab autorilt.",
           soon: "Sisselogimine ja maksed lülitatakse sisse enne avaldamist.",
+          unknown: "Selle aadressiga kontot ei ole. Osta ligipääs või küsi autorilt sõbrakonto kutse.",
           close: "Sulge",
         }
       : {
@@ -473,6 +501,7 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
           verify: "Confirm",
           friend: "Friend-account invitations come from the author.",
           soon: "Sign-in and payments are switched on before launch.",
+          unknown: "No account with this address. Buy access, or ask the author for a friend invite.",
           close: "Close",
         };
 
@@ -486,6 +515,13 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
           className="mt-7 space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
+            if (sent) return;
+            // Mock account check: a code is only ever sent to a known account.
+            if (!KNOWN_ACCOUNTS.includes(email.trim().toLowerCase())) {
+              setError(copy.unknown);
+              return;
+            }
+            setError(null);
             setSent(true);
           }}
         >
@@ -497,11 +533,20 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(null);
+              }}
               placeholder="nimi@näide.ee"
               className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
             />
           </label>
+
+          {error && (
+            <p className="font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-destructive">
+              {error}
+            </p>
+          )}
 
           {sent && (
             <label className="block">
@@ -528,6 +573,102 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
         <p className="mt-5 font-[family-name:var(--font-ui)] text-[11px] leading-relaxed text-muted-foreground">
           {copy.friend} {copy.soon}
         </p>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-6 w-full font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+        >
+          {copy.close}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Direct message to the author. Designed only — messages would land in the ADMIN panel. */
+function AskDoctorDialog({ onClose }: { onClose: () => void }) {
+  const { lang } = useLang();
+  const [sent, setSent] = useState(false);
+
+  const copy =
+    lang === "et"
+      ? {
+          title: "Küsi doktorilt",
+          p: "Kirjuta oma küsimus taimedest, tinktuuridest või raamatust. Sõnum jõuab autori ADMIN-paneeli.",
+          email: "Sinu e-post",
+          msg: "Sinu küsimus",
+          send: "Saada sõnum",
+          done: "Sõnum on saadetud ADMIN-paneeli. Doktor vastab e-postiga.",
+          close: "Sulge",
+        }
+      : {
+          title: "Ask the doctor",
+          p: "Write your question about plants, tinctures or the book. It arrives in the author's ADMIN panel.",
+          email: "Your e-mail",
+          msg: "Your question",
+          send: "Send message",
+          done: "Message sent to the ADMIN panel. The doctor replies by e-mail.",
+          close: "Close",
+        };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 p-5 backdrop-blur-md">
+      <div className="animate-veil w-full max-w-md rounded-sm border border-border bg-card p-8 shadow-(--shadow-plate)">
+        <div className="flex items-center gap-4">
+          <img
+            src={doctorAvatar}
+            alt=""
+            aria-hidden="true"
+            width={256}
+            height={256}
+            className="h-12 w-12 rounded-full border border-primary/40 object-cover"
+          />
+          <h2 className="font-[family-name:var(--font-display)] text-2xl text-foreground">{copy.title}</h2>
+        </div>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{copy.p}</p>
+
+        {sent ? (
+          <p className="mt-7 font-[family-name:var(--font-ui)] text-[12px] leading-relaxed text-primary">
+            {copy.done}
+          </p>
+        ) : (
+          <form
+            className="mt-7 space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSent(true);
+            }}
+          >
+            <label className="block">
+              <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                {copy.email}
+              </span>
+              <input
+                type="email"
+                required
+                placeholder="nimi@näide.ee"
+                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
+              />
+            </label>
+            <label className="block">
+              <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                {copy.msg}
+              </span>
+              <textarea
+                required
+                rows={4}
+                className="mt-2 w-full resize-none rounded-sm border border-input bg-background px-4 py-3 text-sm leading-relaxed text-foreground outline-none focus:border-primary"
+              />
+            </label>
+            <button
+              type="submit"
+              className="w-full rounded-full bg-primary px-6 py-3 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+            >
+              {copy.send}
+            </button>
+          </form>
+        )}
 
         <button
           type="button"
