@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n";
+import { useSession } from "@/lib/session";
 import { supabase } from "@/integrations/supabase/client";
 import doctorAvatar from "@/assets/mock/gabriel-45.jpg";
 
 export function AskDoctorDialog({ onClose }: { onClose: () => void }) {
   const { lang } = useLang();
+  const { user } = useSession();
   const [sent, setSent] = useState(false);
   const [email, setEmail] = useState("");
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Signed-in senders always write under their own verified account e-mail.
+  const accountEmail = user?.email ?? null;
+  useEffect(() => {
+    if (accountEmail) setEmail(accountEmail);
+  }, [accountEmail]);
+
 
   const copy =
     lang === "et"
