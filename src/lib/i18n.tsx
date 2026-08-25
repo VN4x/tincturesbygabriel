@@ -133,7 +133,7 @@ export const dict: Dict = {
   },
   "faq.3.q": { et: "Kas ma saan raamatu faili?", en: "Do I get a book file?" },
   "faq.3.a": {
-    et: "Ligipääs on veebilugemine — tekst tarnitakse peatükkide kaupa sinu kontole.\u00a0\nPaberköite ja e-raamatu faili saad osta siit.",
+    et: "Ligipääs on veebilugemine — tekst tarnitakse peatükkide kaupa sinu kontole.\u00a0\n",
     en: "Access is web reading — the text is delivered chapter by chapter to your account. That keeps the book in the author's hands.",
   },
   "faq.3.link": {
