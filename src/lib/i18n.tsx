@@ -70,9 +70,9 @@ export const dict: Dict = {
   "inside.all": { et: "Ava lugemisvaade", en: "Open the reader" },
 
   "sample.kicker": { et: "Tasuta proov", en: "Free sample" },
-  "sample.title": { et: "Iga külastus avab teise lõigu", en: "Every visit unlocks a different passage" },
+  "sample.title": { et: "Raamat on tutvumiseks avatud", en: "Every visit unlocks a different passage" },
   "sample.p": {
-    et: "Lugemisvaade valib iga kord juhuslikult mõne peatüki ja näitab seda tervikuna. Ülejäänu jääb hämarusse — lukus tekst ei jõua sinu brauserisse üldse.",
+    et: "Lugemisvaade valib igale külastajale mõne peatüki ja näitab seda tervikuna. Tõelistele huvilistele aga -\u00a0 registreeri korra ja kogu raamat koos tinktuurimaagiaga on su jaoks alatiseks avatud.\nÜlejäänude jaoks jäävad Doktor Corpuse maagia saladused hämarusse...",
     en: "The reader picks a few chapters at random each time and shows them in full. The rest stays in the dark — locked text is never sent to your browser at all.",
   },
   "sample.cta": { et: "Ava lugemisvaade", en: "Open the reader" },
