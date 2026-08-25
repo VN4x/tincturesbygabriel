@@ -30,3 +30,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Book text: never in git — it lives in the private book_sections table
+src/content/book-*.json
+*.epub
