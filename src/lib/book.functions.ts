@@ -35,7 +35,9 @@ export const getSample = createServerFn({ method: "POST" }).handler(async (): Pr
   const { getBook } = await import("../content/book.server");
   const book = getBook();
 
-  const chapters = book.sections.filter((s) => s.kind === "chapter");
+  // The title page / colophon carries no reading content.
+  const readable = book.sections.filter((s) => s.id !== "avaleht");
+  const chapters = readable.filter((s) => s.kind === "chapter");
   const openIds = new Set<string>();
 
   // The introduction is always open, plus three random chapters per visit.
