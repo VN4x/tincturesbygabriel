@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { getSample, type PublicSection, type Sample } from "@/lib/book.functions";
+import { getFullBook, getSample, type PublicSection, type Sample } from "@/lib/book.functions";
+import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@/lib/session";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLang } from "@/lib/i18n";
 import engravingJuniper from "@/assets/engraving-juniper.png";
@@ -37,6 +39,37 @@ function ReaderPage() {
   const [size, setSize] = useState(1);
   const [active, setActive] = useState<string>(sample.sections[0]?.id ?? "");
   const [busy, setBusy] = useState(false);
+  const { hasBook, user } = useSession();
+
+  // Entitled readers (admin, friend account, paid) get the whole book from the server.
+  useEffect(() => {
+    if (!hasBook) return;
+    let alive = true;
+    void (async () => {
+      try {
+        const full = await getFullBook();
+        if (alive) setSample(full);
+      } catch {
+        /* entitlement checked server-side; keep the sample view on failure */
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [hasBook]);
+
+  // Anonymous reading statistics for the ADMIN panel.
+  useEffect(() => {
+    if (!active) return;
+    const section = sample.sections.find((s) => s.id === active);
+    if (!section) return;
+    void supabase.from("read_events").insert({
+      section_id: active,
+      locked: section.locked,
+      lang,
+      ...(user ? { user_id: user.id } : {}),
+    });
+  }, [active, lang, sample, user]);
 
   const open = useMemo(() => sample.sections.filter((s) => !s.locked), [sample]);
 
