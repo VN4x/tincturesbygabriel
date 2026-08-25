@@ -308,7 +308,7 @@ function PaymentsTab() {
         data: {
           email: email.trim().toLowerCase(),
           amountCents: Math.round(Number(amount) * 100),
-          note: note.trim() || undefined,
+          ...(note.trim() ? { note: note.trim() } : {}),
         },
       }),
     onSuccess: () => {
@@ -402,7 +402,8 @@ function MessagesTab() {
   const [drafts, setDrafts] = useState<Record<string, string>>({});
 
   const mut = useMutation({
-    mutationFn: (v: { id: string; reply?: string; status: "new" | "answered" | "closed" }) => answer({ data: v }),
+    mutationFn: (v: { id: string; reply?: string | undefined; status: "new" | "answered" | "closed" }) =>
+      answer({ data: v }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["admin"] }),
   });
 
@@ -437,7 +438,7 @@ function MessagesTab() {
             />
             <button
               type="button"
-              onClick={() => mut.mutate({ id: m.id, reply: drafts[m.id] || undefined, status: "answered" })}
+              onClick={() => mut.mutate({ id: m.id, ...(drafts[m.id] ? { reply: drafts[m.id] } : {}), status: "answered" })}
               className="rounded-full bg-primary px-4 py-2 font-[family-name:var(--font-ui)] text-[10px] tracking-[0.16em] text-primary-foreground uppercase"
             >
               Märgi vastatuks
@@ -467,7 +468,10 @@ function InvitesTab() {
   const [msg, setMsg] = useState<string | null>(null);
 
   const mut = useMutation({
-    mutationFn: () => create({ data: { email: email.trim().toLowerCase(), note: note.trim() || undefined } }),
+    mutationFn: () => {
+      const trimmed = note.trim();
+      return create({ data: { email: email.trim().toLowerCase(), ...(trimmed ? { note: trimmed } : {}) } });
+    },
     onSuccess: () => {
       setMsg("Sõbrakonto loodud. Nüüd saab see aadress ühekordse koodiga sisse.");
       setEmail("");
