@@ -350,12 +350,21 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
                 <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
                   {t("reader.lockedNote")}
                 </p>
-                <a
-                  href="/#ligipaas"
-                  className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
-                >
-                  {t("reader.unlock")}
-                </a>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setAskOpen(true)}
+                    className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
+                  >
+                    {t("reader.dm")}
+                  </button>
+                  <a
+                    href="/#ligipaas"
+                    className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
+                  >
+                    {t("reader.unlock")}
+                  </a>
+                </div>
               </div>
               <img
                 src={engravingJuniper}
