@@ -227,7 +227,7 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
           </span>
           <span className="h-px flex-1 rule-gold" />
           <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-            {section.locked ? t("reader.locked") : t("reader.free")} · {t("reader.page")} {section.page}
+            {section.locked && !section.partial ? t("reader.locked") : t("reader.free")} · {t("reader.page")} {section.page}
           </span>
         </div>
         <h2 className="mt-3 font-[family-name:var(--font-display)] text-2xl leading-tight text-foreground sm:text-3xl">

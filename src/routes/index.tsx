@@ -338,7 +338,7 @@ function Landing() {
               onClick={() => setAskOpen(true)}
               className="group mb-5 ml-auto flex items-center gap-3 text-right"
             >
-              <span className="font-[family-name:var(--font-ui)] text-[10px] leading-relaxed tracking-[0.22em] text-muted-foreground uppercase transition-colors group-hover:text-primary">
+              <span className="font-[family-name:var(--font-ui)] text-[13px] leading-relaxed tracking-[0.22em] text-muted-foreground uppercase transition-colors group-hover:text-primary">
                 {lang === "et" ? "Küsi doktorilt" : "Ask the doctor"}
                 <span className="mx-2 text-primary">—</span>
                 DM
@@ -350,7 +350,7 @@ function Landing() {
                 loading="lazy"
                 width={256}
                 height={256}
-                className="h-[3.85rem] w-[3.85rem] shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
+                className="h-[4.62rem] w-[4.62rem] shrink-0 rounded-full border border-primary/40 object-cover shadow-[0_10px_30px_-14px_rgba(0,0,0,0.9)] transition-transform group-hover:-translate-y-0.5"
               />
             </button>
             <div className="relative overflow-hidden rounded-sm border border-primary/25 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
