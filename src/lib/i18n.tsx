@@ -111,7 +111,7 @@ export const dict: Dict = {
   "author.kicker": { et: "Autor", en: "Author" },
   "author.title": { et: "Gabriel Corpus", en: "Gabriel Corpus" },
   "author.p1": {
-    et: "Maagia Doktor. Kirjutab taimedest keele ja tähenduse kaudu: etümoloogia, antiikne mõte ja rahvapärimus koos tänapäevase ekstraktsioonitehnikaga. Aeg avaldada saladuses hoitud maagiatehnikad asjade mõjude saavutamiseks",
+    et: "Maagia Doktor. Õppinud Indias ja Kreeka ülikoolides. Kirjutab taimedest keele ja tähenduse kaudu: etümoloogia, antiikne mõte ja rahvapärimus koos tänapäevase ekstraktsioonitehnikaga. Aeg avaldada saladuses hoitud maagiatehnikad asjade mõjude saavutamiseks",
     en: "Doctor of Magic. Writes about plants through language and meaning: etymology, ancient thought and folk lore alongside modern extraction technique.",
   },
   "author.p2": {
