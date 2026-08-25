@@ -14,5 +14,6 @@ describe("ops scripts", () => {
     const sh = readFileSync("scripts/check-secrets.sh", "utf8");
     expect(sh).toContain(".env");
     expect(sh).toContain("sk_live_");
+    expect(sh).toContain(":!scripts/check-secrets.sh");
   });
 });
