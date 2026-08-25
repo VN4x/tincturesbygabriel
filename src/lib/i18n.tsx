@@ -19,7 +19,7 @@ export const dict: Dict = {
   "nav.inside": { et: "Sisu", en: "Inside" },
   "nav.access": { et: "Ligipääs", en: "Access" },
   "nav.author": { et: "Autor", en: "Author" },
-  "nav.read": { et: "Loe tasuta", en: "Read free" },
+  "nav.read": { et: "VAATA SISSE", en: "Read free" },
   "nav.login": { et: "Logi sisse", en: "Sign in" },
 
   "hero.eyebrow": { et: "Gabriel Corpus · Maagia Doktor", en: "Gabriel Corpus · Doctor of Magic" },
@@ -32,7 +32,7 @@ export const dict: Dict = {
     et: "„Tinktuur on kontsentreeritud aeg.“",
     en: "\u201cA tincture is concentrated time.\u201d",
   },
-  "hero.cta": { et: "Ava tasuta lõik", en: "Open a free passage" },
+  "hero.cta": { et: "TUTVU RAAMATUGA", en: "Open a free passage" },
   "hero.cta2": { et: "Logi sisse", en: "Sign in" },
   "hero.meta": {
     et: "131 lehekülge · eesti ja inglise keeles · digitaalne lugemisõigus",
@@ -82,21 +82,21 @@ export const dict: Dict = {
   "access.free.h": { et: "Tasuta sirvimine", en: "Free browsing" },
   "access.free.price": { et: "0 €", en: "€0" },
   "access.free.p": {
-    et: "Juhuslikud avatud lõigud igal külastusel, kogu sisukord, tabelid ja sissejuhatus.",
+    et: "Juhuslikud avatud lõigud saamaks aimu raamatu olemusest ja sisu väärtusest oma tervise ja tegude mõjutamisel tinktuurimaagiaga.",
     en: "Random open passages on every visit, the full contents, tables and the introduction.",
   },
   "access.free.cta": { et: "Alusta lugemist", en: "Start reading" },
   "access.full.h": { et: "Täisligipääs", en: "Full access" },
-  "access.full.price": { et: "29 €", en: "€29" },
+  "access.full.price": { et: "5 €", en: "€5" },
   "access.full.p": {
-    et: "Kogu raamat mõlemas keeles, järjehoidjad ja lugemisprogress. Ühekordne makse, ligipääs jääb.",
+    et: "Kogu raamat mõlemas keeles, järjehoidjad ja lugemisprogress.\nÜhekordne makse, alatine ligipääs.",
     en: "The whole book in both languages, bookmarks and reading progress. One payment, access stays.",
   },
   "access.full.cta": { et: "Ava täisligipääs", en: "Unlock full access" },
   "access.friend.h": { et: "Sõbrakonto", en: "Friend account" },
   "access.friend.price": { et: "Kutsega", en: "By invitation" },
   "access.friend.p": {
-    et: "Autori loodud konto lähedastele ja kaastöölistele. Sisene sama koodiga, mis sulle saadeti.",
+    et: "Autori loodud konto.\u00a0\nSisene koodiga, mis sulle saadeti.",
     en: "An account created by the author for family and collaborators. Enter with the code you were sent.",
   },
   "access.friend.cta": { et: "Sisesta kutse", en: "Enter invitation" },
@@ -109,7 +109,7 @@ export const dict: Dict = {
   "author.kicker": { et: "Autor", en: "Author" },
   "author.title": { et: "Gabriel Corpus", en: "Gabriel Corpus" },
   "author.p1": {
-    et: "Maagia Doktor. Kirjutab taimedest keele ja tähenduse kaudu: etümoloogia, antiikne mõte ja rahvapärimus koos tänapäevase ekstraktsioonitehnikaga.",
+    et: "Maagia Doktor. Kirjutab taimedest keele ja tähenduse kaudu: etümoloogia, antiikne mõte ja rahvapärimus koos tänapäevase ekstraktsioonitehnikaga. Aeg avaldada saladuses hoitud maagiatehnikad asjade mõjude saavutamiseks",
     en: "Doctor of Magic. Writes about plants through language and meaning: etymology, ancient thought and folk lore alongside modern extraction technique.",
   },
   "author.p2": {
@@ -142,7 +142,7 @@ export const dict: Dict = {
 
   "cta.title": { et: "Astu metsa sisse", en: "Step into the forest" },
   "cta.p": {
-    et: "Ava tasuta lõik ja vaata, kas see keel kõnetab sind. Ülejäänu ootab lukus.",
+    et: "Ava tasuta lõik ja vaata, kas see keel kõnetab sind.",
     en: "Open a free passage and see whether this language speaks to you. The rest waits, locked.",
   },
 
@@ -150,7 +150,7 @@ export const dict: Dict = {
     et: "Kõik õigused kaitstud. Reprodutseerimine ilma autori kirjaliku loata on keelatud.",
     en: "All rights reserved. Reproduction without the author's written permission is prohibited.",
   },
-  "footer.set": { et: "Tekst ja koostamine: Gabriel Corpus · Trükitud Eestis", en: "Text and compilation: Gabriel Corpus · Printed in Estonia" },
+  "footer.set": { et: "Tekst ja koostamine: Gabriel Corpus, raamatu koostamisel ja kujundamisel on kasutatud Ai tööriistu", en: "Text and compilation: Gabriel Corpus · Printed in Estonia" },
 
   "reader.back": { et: "Tagasi avalehele", en: "Back to the landing page" },
   "reader.title": { et: "Lugemisvaade", en: "Reader" },
