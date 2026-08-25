@@ -508,6 +508,13 @@ function LoginDialog({ onClose }: { onClose: () => void }) {
           className="mt-7 space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
+            if (sent) return;
+            // Mock account check: a code is only ever sent to a known account.
+            if (!KNOWN_ACCOUNTS.includes(email.trim().toLowerCase())) {
+              setError(copy.unknown);
+              return;
+            }
+            setError(null);
             setSent(true);
           }}
         >
