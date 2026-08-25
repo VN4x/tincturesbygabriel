@@ -235,7 +235,7 @@ function SectionView({ section, sizeClass }: { section: PublicSection; sizeClass
         </h2>
       </header>
 
-      {section.locked ? (
+      {section.locked && !section.partial ? (
         <div className="relative overflow-hidden rounded-sm border border-border/70 bg-card/50 p-6 sm:p-8">
           <p className={`reader-column ${sizeClass} leading-[1.85] text-foreground/80`}>{visible}</p>
           {veiled && (
