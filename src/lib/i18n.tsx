@@ -136,6 +136,11 @@ export const dict: Dict = {
     et: "Ligipääs on veebilugemine — tekst tarnitakse peatükkide kaupa sinu kontole. Nii püsib raamat autori käes.",
     en: "Access is web reading — the text is delivered chapter by chapter to your account. That keeps the book in the author's hands.",
   },
+  "faq.3.link": {
+    et: "Paberköite ja e-raamatu faili saad osta siit",
+    en: "You can buy the paperback and the e-book file here",
+  },
+
   "faq.4.q": { et: "Kas see asendab arstiabi?", en: "Does this replace medical care?" },
   "faq.4.a": {
     et: "Ei. Raamat on pärimuse ja tehnika käsitlus, mitte ravijuhend. Tugevatoimeliste taimede puhul on täpsus ja mõõdukus hädavajalikud.",
