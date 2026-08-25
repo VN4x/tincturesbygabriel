@@ -180,6 +180,7 @@ export const dict: Dict = {
     en: "The English edition is in preparation — sample passages are shown in the original language for now.",
   },
   "reader.loading": { et: "Metsa avamine…", en: "Opening the forest…" },
+  "reader.dm": { et: "Küsi doktorilt — DM", en: "Ask the doctor — DM" },
 };
 
 type Ctx = {

@@ -4,6 +4,7 @@ import { getFullBook, getSample, type PublicSection, type Sample } from "@/lib/b
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { SiteHeader } from "@/components/SiteHeader";
+import { AskDoctorDialog } from "@/components/AskDoctorDialog";
 import { useLang } from "@/lib/i18n";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 
