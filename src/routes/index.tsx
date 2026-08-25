@@ -7,6 +7,7 @@ import heroForest from "@/assets/hero-forest.jpg";
 import tinctures from "@/assets/tinctures.jpg";
 import engravingBirch from "@/assets/engraving-birch.png";
 import engravingJuniper from "@/assets/engraving-juniper.png";
+import authorPortrait from "@/assets/gabriel-corpus.jpg";
 
 type Teaser = {
   id: string;
@@ -326,16 +327,34 @@ function Landing() {
           height={1024}
           className="animate-drift pointer-events-none absolute -right-20 -bottom-24 w-[26rem] opacity-[0.06]"
         />
-        <div className="relative mx-auto max-w-3xl px-5 text-center sm:px-8">
-          <Kicker center>{t("author.kicker")}</Kicker>
-          <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl text-foreground sm:text-5xl">
-            {t("author.title")}
-          </h2>
-          <span className="mx-auto mt-8 block h-px w-28 rule-gold" />
-          <p className="mt-8 text-[18px] leading-relaxed text-muted-foreground">{t("author.p1")}</p>
-          <p className="mt-8 font-[family-name:var(--font-display)] text-xl leading-relaxed text-foreground/85 italic">
-            {t("author.p2")}
-          </p>
+        <div className="relative mx-auto grid max-w-5xl items-center gap-12 px-5 sm:px-8 md:grid-cols-[minmax(0,22rem)_1fr] md:gap-16">
+          <figure className="mx-auto w-full max-w-[22rem]">
+            <div className="relative overflow-hidden rounded-sm border border-primary/25 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)]">
+              <img
+                src={authorPortrait}
+                alt="Gabriel Corpus, raamatu autor — portree metsas"
+                loading="lazy"
+                width={1024}
+                height={1280}
+                className="h-full w-full object-cover"
+              />
+              <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+            </div>
+            <figcaption className="mt-4 text-center font-[family-name:var(--font-ui)] text-[11px] tracking-[0.28em] text-muted-foreground uppercase">
+              Gabriel Corpus, PhD
+            </figcaption>
+          </figure>
+          <div className="text-center md:text-left">
+            <Kicker>{t("author.kicker")}</Kicker>
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl text-foreground sm:text-5xl">
+              {t("author.title")}
+            </h2>
+            <span className="mt-8 block h-px w-28 rule-gold mx-auto md:mx-0" />
+            <p className="mt-8 text-[18px] leading-relaxed text-muted-foreground">{t("author.p1")}</p>
+            <p className="mt-8 font-[family-name:var(--font-display)] text-xl leading-relaxed text-foreground/85 italic">
+              {t("author.p2")}
+            </p>
+          </div>
         </div>
       </section>
 
