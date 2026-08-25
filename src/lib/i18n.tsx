@@ -19,7 +19,7 @@ export const dict: Dict = {
   "nav.inside": { et: "Sisu", en: "Inside" },
   "nav.access": { et: "Ligipääs", en: "Access" },
   "nav.author": { et: "Autor", en: "Author" },
-  "nav.read": { et: "Loe tasuta", en: "Read free" },
+  "nav.read": { et: "VAATA SISSE", en: "Read free" },
   "nav.login": { et: "Logi sisse", en: "Sign in" },
 
   "hero.eyebrow": { et: "Gabriel Corpus · Maagia Doktor", en: "Gabriel Corpus · Doctor of Magic" },
