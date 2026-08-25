@@ -16,9 +16,12 @@ export type PublicSection = {
   page: number;
   words: number;
   locked: boolean;
+  /** A half-open chapter: real text up to the cut, then locked. */
+  partial?: boolean;
   /** For locked sections this holds only a short teaser, never the full text. */
   blocks: PublicBlock[];
   hiddenBlocks: number;
+
 };
 
 export type Sample = {
