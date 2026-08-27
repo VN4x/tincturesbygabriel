@@ -1,4 +1,5 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/tanstack/vite";
 import { copyPrivateBooksIntoServerOutput } from "./src/lib/copy-books-output.ts";
 
 // Lovable's wrapper defaults Nitro to cloudflare-module. Pin vercel on Vercel
@@ -13,6 +14,7 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
+    plugins: [mcpPlugin()],
     ssr: {
       external: ["foliate-js"],
     },
