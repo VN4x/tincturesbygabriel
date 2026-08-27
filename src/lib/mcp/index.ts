@@ -1,4 +1,5 @@
 import { auth, defineMcp } from "@lovable.dev/mcp-js";
+import type { AnyToolDefinition } from "@lovable.dev/mcp-js";
 
 import getAccessStatus from "./tools/get-access-status";
 import listChapters from "./tools/list-chapters";
@@ -21,5 +22,7 @@ export default defineMcp({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
   }),
-  tools: [getAccessStatus, listChapters, readChapter, searchBook, askTheDoctor, listMyMessages],
+  // Cast: the SDK's tool type conflicts with exactOptionalPropertyTypes on the
+  // optional outputSchema field.
+  tools: [getAccessStatus, listChapters, readChapter, searchBook, askTheDoctor, listMyMessages] as unknown as AnyToolDefinition[],
 });
