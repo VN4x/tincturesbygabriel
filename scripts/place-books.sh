@@ -49,3 +49,4 @@ fi
 echo "---"
 if [[ "$et_ok" -eq 1 ]]; then echo "Estonian: $et_dest"; else echo "Estonian missing: put the ET EPUB at $et_dest"; fi
 if [[ "$en_ok" -eq 1 ]]; then echo "English:  $en_dest (from ForestPowerandHealth.epub)"; else echo "English missing: copy ForestPowerandHealth.epub to $en_dest"; fi
+echo "Vercel: these files stay gitignored and are copied into the serverless function at deploy time."

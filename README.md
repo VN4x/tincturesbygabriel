@@ -4,7 +4,7 @@ Browser reader for Gabriel Corpus’s tincture book. Landing and free sample are
 
 **Live demo:** https://tincturesbygabriel.lovable.app
 
-Vercel is the demo host before a Node/Podman production box. Import the GitHub repo at [vercel.com/new](https://vercel.com/new) (framework **TanStack Start**) or run `npx vercel`. Set `ACCESS_SECRET`, `INVITE_TOKENS`, and `PUBLIC_SITE_URL` in the project. There is no disk: put the EPUB behind `BOOK_URL` (server-side fetch only). Do not commit `.epub` files.
+Vercel is the demo host before a Node/Podman production box. Import the GitHub repo at [vercel.com/new](https://vercel.com/new) (framework **TanStack Start**) or run `npx vercel`. Set `ACCESS_SECRET`, `INVITE_TOKENS`, and `PUBLIC_SITE_URL` in the project. Put the EPUB in `private/books/` on the build machine so Vercel can bundle it into the function; do not commit `.epub` files or place them in `public/`.
 
 ## Stack
 
@@ -73,8 +73,10 @@ podman compose up --build
 | `ACCESS_SECRET` | HMAC for entitlement cookies (required in production) |
 | `INVITE_TOKENS` | Friend codes, e.g. `METSAVAGI-FRIEND` |
 | `PUBLIC_SITE_URL` | Canonical origin (`https://….vercel.app`) for Stripe return URLs |
-| `BOOK_URL` | Private EPUB URL fetched by `/api/book` after entitlement. Without it, `/read` returns 503. |
+| `BOOK_URL` | Optional remote EPUB URL fetched by `/api/book` after entitlement. Alternative to bundling. |
 | Stripe / Resend / Supabase | Same names as `.env.example` |
+
+Copy `private/books/metsa-vagi.epub` onto the machine that builds (gitignored). The Vercel build packs it into the serverless function — not `public/`, not git. `/api/book` still requires an access cookie. Without that file or `BOOK_URL`, `/read` returns 503.
 
 The file ledger cannot persist across serverless instances. Paid access on Vercel needs the Stripe webhook plus Supabase `purchases` / `/auth`, or a later Node host with `ADMIN_STORE_PATH`.
 

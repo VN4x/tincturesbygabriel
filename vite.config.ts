@@ -1,4 +1,5 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { copyPrivateBooksIntoServerOutput } from "./src/lib/copy-books-output.ts";
 
 // Lovable's wrapper defaults Nitro to cloudflare-module. Pin vercel on Vercel
 // builds (VERCEL=1) so Functions get the right output. NITRO_PRESET still wins
@@ -19,5 +20,21 @@ export default defineConfig({
       exclude: ["foliate-js"],
     },
   },
-  ...(nitroPreset ? { nitro: { preset: nitroPreset } } : {}),
+  nitro: {
+    ...(nitroPreset ? { preset: nitroPreset } : {}),
+    // Gitignored EPUBs in private/books — bundled into the server, never public/.
+    // Cast: Lovable's nitro type only lists preset/output/cloudflare; extra fields still reach Nitro.
+    serverAssets: [
+      {
+        baseName: "books",
+        dir: "./private/books",
+        pattern: "*.epub",
+      },
+    ],
+    hooks: {
+      compiled() {
+        copyPrivateBooksIntoServerOutput();
+      },
+    },
+  } as { preset?: string },
 });

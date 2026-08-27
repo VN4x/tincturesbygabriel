@@ -16,4 +16,11 @@ describe("Vercel deploy config", () => {
     expect(vite).toContain('process.env["VERCEL"] ? "vercel"');
     expect(vite).toContain("nitroPreset");
   });
+
+  it("bundles private/books EPUBs as Nitro server assets", () => {
+    const vite = readFileSync("vite.config.ts", "utf8");
+    expect(vite).toContain('dir: "./private/books"');
+    expect(vite).toContain('pattern: "*.epub"');
+    expect(vite).toContain("copyPrivateBooksIntoServerOutput");
+  });
 });
