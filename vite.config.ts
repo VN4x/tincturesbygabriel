@@ -1,6 +1,9 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-const nitroPreset = process.env["NITRO_PRESET"];
+// Lovable's wrapper defaults Nitro to cloudflare-module. Pin vercel on Vercel
+// builds (VERCEL=1) so Functions get the right output. NITRO_PRESET still wins
+// for Podman (node-server) and local overrides.
+const nitroPreset = process.env["NITRO_PRESET"] || (process.env["VERCEL"] ? "vercel" : undefined);
 
 export default defineConfig({
   tanstackStart: {

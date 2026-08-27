@@ -20,6 +20,9 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Vercel CLI link (project.json is created after `vercel link` / claim)
+.vercel/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

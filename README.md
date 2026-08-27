@@ -4,6 +4,8 @@ Browser reader for Gabriel Corpus’s tincture book. Landing and free sample are
 
 **Live demo:** https://tincturesbygabriel.lovable.app
 
+Vercel is the demo host before a Node/Podman production box. Import the GitHub repo at [vercel.com/new](https://vercel.com/new) (framework **TanStack Start**) or run `npx vercel`. Set `ACCESS_SECRET`, `INVITE_TOKENS`, and `PUBLIC_SITE_URL` in the project. There is no disk: put the EPUB behind `BOOK_URL` (server-side fetch only). Do not commit `.epub` files.
+
 ## Stack
 
 TanStack Start + React 19 + Tailwind v4. Do not add a second SvelteKit app. `main` syncs back to [Lovable](https://lovable.dev/projects/7462252c-66c1-49b3-8715-cb4ac8dcc721) — no force-push.
@@ -61,3 +63,19 @@ podman compose up --build
 ```
 
 `compose.yml` mounts `./private/books` to `/data/books` and `./private/admin` to `/data/admin`. Copy `.env.example` and set `ACCESS_SECRET`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD`. Optional: `STRIPE_SECRET_KEY` + `STRIPE_PRICE_ID`, `RESEND_API_KEY`.
+
+## Production (Vercel)
+
+`vercel.json` sets the TanStack Start preset. `vite.config.ts` uses Nitro `vercel` when `VERCEL=1`. Install uses `npm ci` (ignore the Lovable `bun.lock` on this host).
+
+| Env | Why |
+| --- | --- |
+| `ACCESS_SECRET` | HMAC for entitlement cookies (required in production) |
+| `INVITE_TOKENS` | Friend codes, e.g. `METSAVAGI-FRIEND` |
+| `PUBLIC_SITE_URL` | Canonical origin (`https://….vercel.app`) for Stripe return URLs |
+| `BOOK_URL` | Private EPUB URL fetched by `/api/book` after entitlement. Without it, `/read` returns 503. |
+| Stripe / Resend / Supabase | Same names as `.env.example` |
+
+The file ledger cannot persist across serverless instances. Paid access on Vercel needs the Stripe webhook plus Supabase `purchases` / `/auth`, or a later Node host with `ADMIN_STORE_PATH`.
+
+Stripe webhook endpoint: `https://<host>/api/stripe/webhook` (`checkout.session.completed`).
