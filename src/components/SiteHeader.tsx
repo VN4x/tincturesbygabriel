@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLang } from "@/lib/i18n";
+import { useAccess } from "@/lib/access-context";
 import { useSession } from "@/lib/session";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
 
 export function LangToggle() {
   const { lang, setLang } = useLang();
@@ -27,12 +29,14 @@ export function LangToggle() {
 }
 
 function AccountControls() {
-  const { user, isAdmin, signOut } = useSession();
+  const { user, isAdmin, hasBook, signOut } = useSession();
+  const { entitlement, openAccess, logout } = useAccess();
   const { t } = useLang();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const cloud = isSupabaseConfigured();
 
-  if (!user) {
+  if (cloud && !user) {
     return (
       <Link
         to="/auth"
@@ -43,34 +47,79 @@ function AccountControls() {
     );
   }
 
-  return (
-    <div className="flex items-center gap-3">
-      {isAdmin && (
-        <Link
-          to="/admin"
-          className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary uppercase transition-opacity hover:opacity-80"
+  if (cloud && user) {
+    return (
+      <div className="flex items-center gap-3">
+        {isAdmin && (
+          <Link
+            to="/admin"
+            className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary uppercase transition-opacity hover:opacity-80"
+          >
+            Admin
+          </Link>
+        )}
+        {(hasBook || entitlement) && (
+          <Link
+            to="/read"
+            className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary uppercase"
+          >
+            {t("nav.fullRead")}
+          </Link>
+        )}
+        <button
+          type="button"
+          onClick={async () => {
+            await queryClient.cancelQueries();
+            queryClient.clear();
+            await signOut();
+            await logout();
+            void navigate({ to: "/", replace: true });
+          }}
+          className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase transition-colors hover:text-foreground"
         >
-          Admin
+          {t("nav.signout")}
+        </button>
+      </div>
+    );
+  }
+
+  if (entitlement) {
+    return (
+      <div className="flex items-center gap-3">
+        <Link
+          to="/read"
+          className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary uppercase"
+        >
+          {t("nav.fullRead")}
         </Link>
-      )}
-      <button
-        type="button"
-        onClick={async () => {
-          await queryClient.cancelQueries();
-          queryClient.clear();
-          await signOut();
-          void navigate({ to: "/", replace: true });
-        }}
-        className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase transition-colors hover:text-foreground"
-      >
-        {t("nav.signout")}
-      </button>
-    </div>
+        <button
+          type="button"
+          onClick={() => void logout()}
+          className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase hover:text-foreground"
+        >
+          {t("nav.logout")}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      data-testid="nav-login"
+      onClick={() => openAccess("login")}
+      className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-muted-foreground uppercase hover:text-foreground"
+    >
+      {t("nav.login")}
+    </button>
   );
 }
 
 export function SiteHeader({ variant = "landing" }: { variant?: "landing" | "reader" }) {
   const { t } = useLang();
+  const { entitlement, openAccess } = useAccess();
+  const { hasBook } = useSession();
+  const canRead = Boolean(entitlement || hasBook);
 
   return (
     <header className="fixed top-0 z-50 w-full border-b border-border/60 bg-background/70 backdrop-blur-xl">
@@ -112,18 +161,26 @@ export function SiteHeader({ variant = "landing" }: { variant?: "landing" | "rea
           <LangToggle />
           {variant === "landing" ? (
             <Link
-              to="/lugemine"
+              to={canRead ? "/read" : "/lugemine"}
               className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
             >
-              {t("nav.read")}
+              {canRead ? t("nav.fullRead") : t("nav.read")}
+            </Link>
+          ) : canRead ? (
+            <Link
+              to="/read"
+              className="rounded-full bg-primary px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase"
+            >
+              {t("nav.fullRead")}
             </Link>
           ) : (
-            <a
-              href="/#ligipaas"
+            <button
+              type="button"
+              onClick={() => openAccess("purchase")}
               className="rounded-full bg-primary px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
             >
               {t("reader.unlock")}
-            </a>
+            </button>
           )}
         </div>
       </div>

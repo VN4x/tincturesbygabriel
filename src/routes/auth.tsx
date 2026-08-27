@@ -1,12 +1,16 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
 
 export const Route = createFileRoute("/auth")({
+  beforeLoad: () => {
+    if (!isSupabaseConfigured()) throw redirect({ to: "/" });
+  },
   head: () => ({
     meta: [
       { title: "Sisene — Metsa vägi ja tervis" },
@@ -105,7 +109,7 @@ function AuthPage() {
       setError(copy.bad);
       return;
     }
-    void navigate({ to: "/lugemine" });
+    void navigate({ to: "/read" });
   }
 
   async function google() {
@@ -118,7 +122,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    void navigate({ to: "/lugemine" });
+    void navigate({ to: "/read" });
   }
 
   return (
@@ -132,7 +136,7 @@ function AuthPage() {
               {copy.signedIn} <span className="text-foreground">{user.email}</span>
             </p>
             <Link
-              to="/lugemine"
+              to="/read"
               className="block rounded-full bg-primary px-6 py-3 text-center font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary-foreground uppercase"
             >
               {copy.reader}

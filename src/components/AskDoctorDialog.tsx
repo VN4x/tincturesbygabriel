@@ -1,24 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { useSession } from "@/lib/session";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
+import { submitInbox } from "@/lib/admin.functions";
 import doctorAvatar from "@/assets/mock/gabriel-45.jpg";
 
 export function AskDoctorDialog({ onClose }: { onClose: () => void }) {
   const { lang } = useLang();
-  const { user } = useSession();
   const [sent, setSent] = useState(false);
   const [email, setEmail] = useState("");
   const [body, setBody] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Signed-in senders always write under their own verified account e-mail.
-  const accountEmail = user?.email ?? null;
-  useEffect(() => {
-    if (accountEmail) setEmail(accountEmail);
-  }, [accountEmail]);
-
 
   const copy =
     lang === "et"
@@ -69,16 +61,24 @@ export function AskDoctorDialog({ onClose }: { onClose: () => void }) {
               if (busy) return;
               setBusy(true);
               setError(null);
-              const { error: insertError } = await supabase.from("messages").insert({
-                // Signed in: bind the row to the caller's own account + verified e-mail.
-                // Anonymous: user_id stays null, as the anon policy requires.
-                user_id: user?.id ?? null,
-                email: (accountEmail ?? email).trim().toLowerCase(),
-                body: body.trim(),
-                kind: "dm",
-              });
+              let ok = false;
+              if (isSupabaseConfigured()) {
+                const { supabase } = await import("@/integrations/supabase/client");
+                const { error: insertError } = await supabase.from("messages").insert({
+                  email: email.trim().toLowerCase(),
+                  body: body.trim(),
+                  kind: "dm",
+                });
+                ok = !insertError;
+              }
+              if (!ok) {
+                const local = await submitInbox({
+                  data: { kind: "dm", email: email.trim().toLowerCase(), body: body.trim() },
+                });
+                ok = local.ok;
+              }
               setBusy(false);
-              if (insertError) {
+              if (!ok) {
                 setError(lang === "et" ? "Saatmine ebaõnnestus. Proovi hiljem uuesti." : "Sending failed. Try again later.");
                 return;
               }
@@ -94,13 +94,11 @@ export function AskDoctorDialog({ onClose }: { onClose: () => void }) {
                 required
                 maxLength={255}
                 value={email}
-                readOnly={Boolean(accountEmail)}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nimi@näide.ee"
-                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary read-only:opacity-70"
+                className="mt-2 w-full rounded-sm border border-input bg-background px-4 py-3 font-[family-name:var(--font-ui)] text-sm text-foreground outline-none focus:border-primary"
               />
             </label>
-
             <label className="block">
               <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
                 {copy.msg}

@@ -13,7 +13,7 @@ import {
   listPeople,
   recordPurchase,
   revokeFriend,
-} from "@/lib/admin.functions";
+} from "@/lib/cloud-admin.functions";
 import { useSession } from "@/lib/session";
 
 export const Route = createFileRoute("/_authenticated/admin")({

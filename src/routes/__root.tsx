@@ -12,8 +12,10 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LanguageProvider } from "../lib/i18n";
+import { AccessProvider } from "../lib/access-context";
+import { AccessDialog } from "../components/AccessDialog";
 import { SessionProvider } from "../lib/session";
-import { supabase } from "../integrations/supabase/client";
+import { isSupabaseConfigured } from "../lib/supabase-env";
 
 function NotFoundComponent() {
   return (
@@ -119,22 +121,31 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+  const path = router.state.location.pathname;
+  const hidePaywall = path === "/admin" || path === "/ops" || path === "/auth";
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      router.invalidate();
-      if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
+    if (!isSupabaseConfigured()) return;
+    let unsub: (() => void) | undefined;
+    void import("../integrations/supabase/client").then(({ supabase }) => {
+      const { data } = supabase.auth.onAuthStateChange((event) => {
+        if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+        router.invalidate();
+        if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
+      });
+      unsub = () => data.subscription.unsubscribe();
     });
-    return () => data.subscription.unsubscribe();
+    return () => unsub?.();
   }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <SessionProvider>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
+          <AccessProvider>
+            <Outlet />
+            {hidePaywall ? null : <AccessDialog />}
+          </AccessProvider>
         </SessionProvider>
       </LanguageProvider>
     </QueryClientProvider>

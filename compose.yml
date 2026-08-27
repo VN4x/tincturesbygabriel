@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NITRO_PRESET: node-server
+      ACCESS_SECRET: ${ACCESS_SECRET:-change-me-in-production}
+      BOOK_PATH: /data/books/metsa-vagi.epub
+      ADMIN_STORE_PATH: /data/admin/store.json
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      INVITE_TOKENS: ${INVITE_TOKENS:-METSAVAGI-FRIEND}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:3000}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_PRICE_ID: ${STRIPE_PRICE_ID:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      OTP_FROM: ${OTP_FROM:-}
+    volumes:
+      - ./private/books:/data/books:ro
+      - ./private/admin:/data/admin
+    restart: unless-stopped

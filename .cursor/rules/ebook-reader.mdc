@@ -1,0 +1,13 @@
+---
+description: Metsa Vägi reader conventions — one TanStack Start stack, no EPUB leaks, no Lovable history rewrites
+alwaysApply: true
+---
+
+# Metsa Vägi
+
+- Stay on **TanStack Start + React 19 + Tailwind**. Do not add SvelteKit or fork Koodo/Readest.
+- Never put `.epub` files in `public/` or commit them. Serve only from `private/books` or `BOOK_URL` after entitlement.
+- Anonymous `/lugemine` must keep using `getSample` truncation. Do not import the full book JSON on the client.
+- Commits to `main` sync to Lovable. **No force-push, rebase, or amend** of published history.
+- Do **not** `git pull` Lovable into this working tree. Fetch `origin/main` and refresh the gitignored `lovable/` snapshot. Port UI by hand.
+- Full reader is `/read` + `foliate-js`. Paywall UI is `AccessDialog` (OTP / 5€ mock-or-Stripe / invite `METSAVAGI-FRIEND`).

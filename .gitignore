@@ -20,6 +20,9 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Vercel CLI link (project.json is created after `vercel link` / claim)
+.vercel/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -31,6 +34,24 @@ dist-ssr
 *.sln
 *.sw?
 
-# Book text: never in git — it lives in the private book_sections table
-src/content/book-*.json
+# Book source — never publish the EPUB or the full extract.
+# Anonymous /lugemine still uses the committed sample JSON (getSample).
+# Full text on Lovable lives in private book_sections; do not gitignore the sample.
 *.epub
+*.pdf
+*.af
+private/
+src/content/book-et.full.json
+
+# Local secrets — origin/main tracks a Lovable .env; never take that into this branch
+.env
+.env.*
+!.env.example
+
+# Clean Lovable snapshot — never merge origin/main into this working tree as a sync
+/lovable/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/

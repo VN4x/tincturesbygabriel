@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { getFullBook, getSample, type PublicSection, type Sample } from "@/lib/book.functions";
-import { supabase } from "@/integrations/supabase/client";
-import { useSession } from "@/lib/session";
+import { getSample, type PublicSection, type Sample } from "@/lib/book.functions";
 import { SiteHeader } from "@/components/SiteHeader";
-import { AskDoctorDialog } from "@/components/AskDoctorDialog";
 import { useLang } from "@/lib/i18n";
+import { useAccess } from "@/lib/access-context";
+import { AskDoctorDialog } from "@/components/AskDoctorDialog";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 
 export const Route = createFileRoute("/lugemine")({
@@ -36,42 +35,12 @@ const SIZES = ["text-[15px]", "text-[17px]", "text-[19px]", "text-[22px]"] as co
 function ReaderPage() {
   const initial = Route.useLoaderData() as Sample;
   const { t, lang } = useLang();
+  const { entitlement, openAccess } = useAccess();
   const [sample, setSample] = useState<Sample>(initial);
   const [size, setSize] = useState(1);
   const [active, setActive] = useState<string>(sample.sections[0]?.id ?? "");
   const [busy, setBusy] = useState(false);
   const [askOpen, setAskOpen] = useState(false);
-  const { hasBook, user } = useSession();
-
-  // Entitled readers (admin, friend account, paid) get the whole book from the server.
-  useEffect(() => {
-    if (!hasBook) return;
-    let alive = true;
-    void (async () => {
-      try {
-        const full = await getFullBook();
-        if (alive) setSample(full);
-      } catch {
-        /* entitlement checked server-side; keep the sample view on failure */
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, [hasBook]);
-
-  // Anonymous reading statistics for the ADMIN panel.
-  useEffect(() => {
-    if (!active) return;
-    const section = sample.sections.find((s) => s.id === active);
-    if (!section) return;
-    void supabase.from("read_events").insert({
-      section_id: active,
-      locked: section.locked,
-      lang,
-      ...(user ? { user_id: user.id } : {}),
-    });
-  }, [active, lang, sample, user]);
 
   const open = useMemo(() => sample.sections.filter((s) => !s.locked), [sample]);
 
@@ -132,7 +101,7 @@ function ReaderPage() {
                 {sample.title}
               </h1>
               <p className="mt-1 font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
-                {sample.openCount} {t(hasBook ? "reader.fullOpenCount" : "reader.openCount")} · {sample.author}
+                {sample.openCount} {t("reader.openCount")} · {sample.author}
               </p>
             </div>
 
@@ -158,7 +127,6 @@ function ReaderPage() {
                 </div>
               </div>
 
-              {!hasBook && (
               <button
                 type="button"
                 onClick={reshuffle}
@@ -167,7 +135,6 @@ function ReaderPage() {
               >
                 {busy ? t("reader.loading") : t("reader.reshuffle")}
               </button>
-              )}
             </div>
           </div>
 
@@ -179,7 +146,13 @@ function ReaderPage() {
 
           <div className="space-y-16">
             {sample.sections.map((s) => (
-              <SectionView key={s.id} section={s} sizeClass={SIZES[size] ?? SIZES[1]} onAsk={() => setAskOpen(true)} />
+              <SectionView
+                key={s.id}
+                section={s}
+                sizeClass={SIZES[size] ?? SIZES[1]}
+                onUnlock={() => openAccess("purchase")}
+                onAsk={() => setAskOpen(true)}
+              />
             ))}
           </div>
         </main>
@@ -188,9 +161,7 @@ function ReaderPage() {
       {/* Paywall bar */}
       <div className="fixed bottom-0 z-40 w-full border-t border-border bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-3.5 sm:px-8">
-          <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
-            {t(hasBook ? "reader.fullBar" : "reader.bar")}
-          </p>
+          <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">{t("reader.bar")}</p>
           <div className="flex items-center gap-3">
             <Link
               to="/"
@@ -205,18 +176,25 @@ function ReaderPage() {
             >
               {t("reader.dm")}
             </button>
-            {!hasBook && (
-              <a
-                href="/#ligipaas"
+            {entitlement ? (
+              <Link
+                to="/read"
+                className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
+              >
+                {t("nav.fullRead")}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => openAccess("purchase")}
                 className="rounded-full bg-primary px-5 py-2 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.16em] text-primary-foreground uppercase transition-opacity hover:opacity-90"
               >
                 {t("reader.unlock")}
-              </a>
+              </button>
             )}
           </div>
         </div>
       </div>
-
       {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
@@ -227,7 +205,17 @@ function shortTitle(title: string) {
   return cut.length > 34 ? `${cut.slice(0, 33)}…` : cut;
 }
 
-function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; sizeClass: string; onAsk: () => void }) {
+function SectionView({
+  section,
+  sizeClass,
+  onUnlock,
+  onAsk,
+}: {
+  section: PublicSection;
+  sizeClass: string;
+  onUnlock: () => void;
+  onAsk: () => void;
+}) {
   const { t } = useLang();
   const teaser = section.blocks[0];
   const teaserText = teaser && teaser.t === "p" ? teaser.text : "";
@@ -244,7 +232,7 @@ function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; si
           </span>
           <span className="h-px flex-1 rule-gold" />
           <span className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-            {section.locked && !section.partial ? t("reader.locked") : t("reader.free")} · {t("reader.page")} {section.page}
+            {section.locked ? t("reader.locked") : t("reader.free")} · {t("reader.page")} {section.page}
           </span>
         </div>
         <h2 className="mt-3 font-[family-name:var(--font-display)] text-2xl leading-tight text-foreground sm:text-3xl">
@@ -252,7 +240,7 @@ function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; si
         </h2>
       </header>
 
-      {section.locked && !section.partial ? (
+      {section.locked ? (
         <div className="relative overflow-hidden rounded-sm border border-border/70 bg-card/50 p-6 sm:p-8">
           <p className={`reader-column ${sizeClass} leading-[1.85] text-foreground/80`}>{visible}</p>
           {veiled && (
@@ -285,12 +273,13 @@ function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; si
               >
                 {t("reader.dm")}
               </button>
-              <a
-                href="/#ligipaas"
+              <button
+                type="button"
+                onClick={onUnlock}
                 className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
               >
                 {t("reader.unlock")}
-              </a>
+              </button>
             </div>
           </div>
 
@@ -349,52 +338,8 @@ function SectionView({ section, sizeClass, onAsk }: { section: PublicSection; si
               </p>
             );
           })}
-
-          {section.partial && (
-            <div className="relative mt-2 overflow-hidden rounded-sm border border-border/70 bg-card/50 p-6 sm:p-8">
-              <div aria-hidden="true" className="space-y-3 select-none">
-                {[94, 82, 97, 70, 88].map((w, i) => (
-                  <div
-                    key={i}
-                    className="h-3.5 rounded-full bg-foreground/10 blur-[3px]"
-                    style={{ width: `${w}%` }}
-                  />
-                ))}
-              </div>
-              <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-5">
-                <p className="font-[family-name:var(--font-ui)] text-xs text-muted-foreground">
-                  {t("reader.lockedNote")}
-                </p>
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={onAsk}
-                    className="rounded-full border border-border px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.12em] text-muted-foreground uppercase transition-colors hover:border-primary/60 hover:text-primary"
-                  >
-                    {t("reader.dm")}
-                  </button>
-                  <a
-                    href="/#ligipaas"
-                    className="rounded-full border border-primary/60 px-4 py-1.5 font-[family-name:var(--font-ui)] text-[11px] tracking-[0.14em] text-primary uppercase transition-colors hover:bg-primary hover:text-primary-foreground"
-                  >
-                    {t("reader.unlock")}
-                  </a>
-                </div>
-              </div>
-              <img
-                src={engravingJuniper}
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                width={1024}
-                height={1024}
-                className="pointer-events-none absolute -right-16 -bottom-20 w-56 opacity-[0.05]"
-              />
-            </div>
-          )}
         </div>
       )}
-
     </article>
   );
 }

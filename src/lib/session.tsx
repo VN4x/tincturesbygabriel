@@ -1,7 +1,7 @@
-import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-
+import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured } from "./supabase-env";
 
 export type Access = {
   user: User | null;
@@ -17,7 +17,25 @@ export type Access = {
 
 const SessionContext = createContext<Access | null>(null);
 
+const emptyAccess = (): Access => ({
+  user: null,
+  session: null,
+  roles: [],
+  isAdmin: false,
+  hasBook: false,
+  loading: false,
+  refresh: async () => undefined,
+  signOut: async () => undefined,
+});
+
 export function SessionProvider({ children }: { children: ReactNode }) {
+  if (!isSupabaseConfigured()) {
+    return <SessionContext.Provider value={emptyAccess()}>{children}</SessionContext.Provider>;
+  }
+  return <SessionProviderLive>{children}</SessionProviderLive>;
+}
+
+function SessionProviderLive({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [roles, setRoles] = useState<string[]>([]);
   const [paid, setPaid] = useState(false);
@@ -31,8 +49,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     const [rolesRes, paidRes] = await Promise.all([
       supabase.from("user_roles").select("role").eq("user_id", userId),
-      // RLS narrows this to the reader's own purchases (by account or by verified e-mail).
-      supabase.from("purchases").select("id").eq("status", "paid").limit(1),
+      supabase.from("purchases").select("id").eq("user_id", userId).eq("status", "paid").limit(1),
     ]);
     setRoles((rolesRes.data ?? []).map((r) => r.role as string));
     setPaid((paidRes.data ?? []).length > 0);

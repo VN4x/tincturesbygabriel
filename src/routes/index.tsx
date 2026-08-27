@@ -3,15 +3,15 @@ import { useMemo, useState } from "react";
 import teasers from "@/content/teasers.json";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLang } from "@/lib/i18n";
+import { useAccess } from "@/lib/access-context";
 import { AskDoctorDialog } from "@/components/AskDoctorDialog";
+import { isSupabaseConfigured } from "@/lib/supabase-env";
 import heroForest from "@/assets/hero-forest.jpg";
 import tinctures from "@/assets/tinctures.jpg";
 import engravingBirch from "@/assets/engraving-birch.png";
 import engravingJuniper from "@/assets/engraving-juniper.png";
 import authorPortrait from "@/assets/gabriel-corpus.jpg";
 import doctorAvatar from "@/assets/mock/gabriel-45.jpg";
-import { supabase } from "@/integrations/supabase/client";
-
 
 type Teaser = {
   id: string;
@@ -66,11 +66,15 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   const { t, lang } = useLang();
-  const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
-  const words = useMemo(() => sections.reduce((sum, s) => sum + s.words, 0), []);
+  const { openAccess } = useAccess();
   const [askOpen, setAskOpen] = useState(false);
   const navigate = useNavigate();
-  const goLogin = () => void navigate({ to: "/auth" });
+  const goLogin = () => {
+    if (isSupabaseConfigured()) void navigate({ to: "/auth" });
+    else openAccess("login");
+  };
+  const chapters = useMemo(() => sections.filter((s) => s.kind === "chapter"), []);
+  const words = useMemo(() => sections.reduce((sum, s) => s.words, 0), []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -301,7 +305,7 @@ function Landing() {
                   ) : (
                     <button
                       type="button"
-                      onClick={goLogin}
+                      onClick={() => openAccess(tier === "full" ? "purchase" : "invite")}
                       className={`mt-8 rounded-full px-6 py-3 text-center font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] uppercase transition-opacity ${
                         featured
                           ? "bg-primary text-primary-foreground hover:opacity-90"
@@ -392,7 +396,7 @@ function Landing() {
             {t("faq.title")}
           </h2>
           <div className="mt-12 divide-y divide-border/70 border-y border-border/70">
-            {[1, 2, 3, 4].map((n) => (
+            {[1, 2, 3, 4, 5].map((n) => (
               <details key={n} className="group py-6">
                 <summary className="flex cursor-pointer items-center justify-between gap-6 font-[family-name:var(--font-display)] text-lg text-foreground marker:content-none">
                   {t(`faq.${n}.q`)}
@@ -400,24 +404,35 @@ function Landing() {
                     +
                   </span>
                 </summary>
-                <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
-                  {t(`faq.${n}.a`)}
-                  {n === 3 && (
-                    <>
-                      {" "}
-                      <a
-                        href="https://a.co/d/02Sl0Z5a"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
-                      >
-                        {t("faq.3.link")}
-                      </a>
-                      .
-                    </>
-                  )}
-                </p>
-
+                {n === 5 ? (
+                  <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+                    {lang === "et" ? "Paberraamat (Lulu / Amazon) on eraldi trükiväljaanne. " : "The paperback (Lulu / Amazon) is a separate print edition. "}
+                    <a
+                      className="text-primary underline-offset-4 hover:underline"
+                      href="https://www.amazon.com/s?k=Metsa+vagi+ja+tervis+Gabriel+Corpus"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Amazon
+                    </a>
+                    {lang === "et" ? " ja " : " and "}
+                    <a
+                      className="text-primary underline-offset-4 hover:underline"
+                      href="https://www.lulu.com/search?adult_audience_rating=00&page=1&pageSize=10&q=Metsa%20v%C3%A4gi"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Lulu
+                    </a>
+                    {lang === "et"
+                      ? ". Veebilugemine siin lehel on 5 € täisligipääs."
+                      : ". Web reading on this site is the €5 full access."}
+                  </p>
+                ) : (
+                  <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+                    {t(`faq.${n}.a`)}
+                  </p>
+                )}
               </details>
             ))}
           </div>
@@ -457,9 +472,15 @@ function Landing() {
           </p>
           <p>Autoriõigus © 2026 Gabriel Corpus. {t("footer.rights")}</p>
           <p>{t("footer.set")}</p>
+          <button
+            type="button"
+            onClick={() => setAskOpen(true)}
+            className="mx-auto font-[family-name:var(--font-ui)] text-[11px] tracking-[0.18em] text-primary uppercase hover:text-foreground"
+          >
+            {lang === "et" ? "Küsi doktorilt — DM" : "Ask the doctor — DM"}
+          </button>
         </div>
       </footer>
-
       {askOpen && <AskDoctorDialog onClose={() => setAskOpen(false)} />}
     </div>
   );
