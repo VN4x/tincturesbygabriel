@@ -1,5 +1,5 @@
 import { auth, defineMcp } from "@lovable.dev/mcp-js";
-import type { AnyToolDefinition } from "@lovable.dev/mcp-js";
+import type { ToolDefinition } from "@lovable.dev/mcp-js";
 
 import getAccessStatus from "./tools/get-access-status";
 import listChapters from "./tools/list-chapters";
@@ -24,5 +24,5 @@ export default defineMcp({
   }),
   // Cast: the SDK's tool type conflicts with exactOptionalPropertyTypes on the
   // optional outputSchema field.
-  tools: [getAccessStatus, listChapters, readChapter, searchBook, askTheDoctor, listMyMessages] as unknown as AnyToolDefinition[],
+  tools: [getAccessStatus, listChapters, readChapter, searchBook, askTheDoctor, listMyMessages] as unknown as ToolDefinition[],
 });
