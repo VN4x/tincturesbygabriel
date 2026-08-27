@@ -11,6 +11,7 @@ import {
   type AccessSource,
   type Entitlement,
 } from "./access";
+import { freeAccessEmail, freeAccessEnabled } from "./free-access";
 
 const { COOKIE, OTP_COOKIE } = cookieNames();
 
@@ -85,6 +86,13 @@ async function emailFromCloudAuthHeader(): Promise<string | null> {
   }
 }
 
+async function ensureFreeAccessEntitlement(): Promise<Entitlement> {
+  const email = freeAccessEmail();
+  const existing = await readEntitlement(getCookie(COOKIE));
+  if (existing?.email === email) return existing;
+  return grant(email, "admin");
+}
+
 /** Google / cloud OTP session on a new device: mint the reader cookie from ledger or paid/friend role. */
 async function bridgeCloudEntitlement(): Promise<Entitlement | null> {
   const email = await emailFromCloudAuthHeader();
@@ -110,6 +118,7 @@ async function bridgeCloudEntitlement(): Promise<Entitlement | null> {
 }
 
 export const getEntitlement = createServerFn({ method: "GET" }).handler(async (): Promise<Entitlement | null> => {
+  if (freeAccessEnabled()) return ensureFreeAccessEntitlement();
   const ent = await readEntitlement(getCookie(COOKIE));
   if (!ent) return bridgeCloudEntitlement();
   const { getActiveReader, upsertGrant } = await import("./admin-store.server");
@@ -242,6 +251,13 @@ export const completeStripeSession = createServerFn({ method: "POST" })
   });
 
 export const issueBookUrl = createServerFn({ method: "GET" }).handler(async () => {
+  if (freeAccessEnabled()) {
+    const email = freeAccessEmail();
+    const { recordRead } = await import("./admin-store.server");
+    await recordRead(email).catch(() => undefined);
+    const token = await signBookToken(email);
+    return { ok: true as const, url: `/api/book?t=${encodeURIComponent(token)}` };
+  }
   const ent = await readEntitlement(getCookie(COOKIE));
   if (!ent) return { ok: false as const, error: "unauthorized" };
   const { getActiveReader, recordRead } = await import("./admin-store.server");

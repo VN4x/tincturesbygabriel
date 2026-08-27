@@ -16,6 +16,7 @@ import { AccessProvider } from "../lib/access-context";
 import { AccessDialog } from "../components/AccessDialog";
 import { SessionProvider } from "../lib/session";
 import { isSupabaseConfigured } from "../lib/supabase-env";
+import { freeAccessUiEnabled } from "../lib/free-access";
 
 function NotFoundComponent() {
   return (
@@ -122,7 +123,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const path = router.state.location.pathname;
-  const hidePaywall = path === "/admin" || path === "/ops" || path === "/auth";
+  const hidePaywall =
+    freeAccessUiEnabled() || path === "/admin" || path === "/ops" || path === "/auth";
 
   useEffect(() => {
     if (!isSupabaseConfigured()) return;

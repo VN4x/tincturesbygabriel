@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getCookie } from "@tanstack/react-start/server";
 import { cookieNames, readBookToken, readEntitlement } from "@/lib/access";
+import { freeAccessEmail, freeAccessEnabled } from "@/lib/free-access";
 import { loadEpubBytes } from "@/lib/book-file.server";
 
 export const Route = createFileRoute("/api/book")({
@@ -10,13 +11,16 @@ export const Route = createFileRoute("/api/book")({
         const url = new URL(request.url);
         const token = url.searchParams.get("t");
         const cookie = getCookie(cookieNames().COOKIE);
-        const email = (await readBookToken(token)) || (await readEntitlement(cookie))?.email;
+        let email = (await readBookToken(token)) || (await readEntitlement(cookie))?.email;
+        if (!email && freeAccessEnabled()) email = freeAccessEmail();
         if (!email) {
           return new Response("Unauthorized", { status: 401 });
         }
-        const { getActiveReader } = await import("@/lib/admin-store.server");
-        if (!(await getActiveReader(email))) {
-          return new Response("Unauthorized", { status: 401 });
+        if (!freeAccessEnabled()) {
+          const { getActiveReader } = await import("@/lib/admin-store.server");
+          if (!(await getActiveReader(email))) {
+            return new Response("Unauthorized", { status: 401 });
+          }
         }
 
         const bytes = await loadEpubBytes();
