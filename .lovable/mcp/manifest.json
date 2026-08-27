@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "sdk_version": "0.28.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://anrdgrskottbayhnwtqq.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "gabrielbook",
+      "version": "0.1.0",
+      "title": "GabrielBook"
+    },
+    "tools": [
+      {
+        "name": "get_access_status",
+        "title": "Get my access status",
+        "description": "Report whether the signed-in reader has full access to the book, and which roles or purchases grant it.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_chapters",
+        "title": "List book chapters",
+        "description": "List the table of contents of 'Metsa vägi ja tervis' (id, label, title, page, word count) for the signed-in reader.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "read_chapter",
+        "title": "Read a chapter",
+        "description": "Return the full text of one section of 'Metsa vägi ja tervis'. Requires full access (purchase, friend account or admin).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "section_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Section id from list_chapters."
+            }
+          },
+          "required": [
+            "section_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_book",
+        "title": "Search the book",
+        "description": "Search 'Metsa vägi ja tervis' for a word or phrase and return matching passages with their section. Requires full access.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Word or phrase to look for, e.g. 'naistepuna'."
+            },
+            "limit": {
+              "description": "Maximum passages to return (default 5).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          },
+          "required": [
+            "query"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "ask_the_doctor",
+        "title": "Ask the doctor",
+        "description": "Send a question about plants, tinctures or the book to the author's admin panel, as the signed-in reader.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "description": "The question to send to the author."
+            }
+          },
+          "required": [
+            "body"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_messages",
+        "title": "List my messages",
+        "description": "List the signed-in reader's own questions to the author and any replies.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Maximum messages to return (default 10).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
